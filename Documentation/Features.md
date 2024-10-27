@@ -32,3 +32,35 @@ Satellite(base class)
         -launching missile (defines the tracjectory of missile)
         -cooldown controller
         -
+
+Asteriods(base class)
+    Data
+        -name
+        -image
+        -life(useful for boss and big ones)
+        -speed
+        -size
+    Methods
+        - destruction(defines what happens when gets blasted)
+        - getter and setter methods
+        - soundOnBlast
+        -setTrajectory
+        -render(draws asteroid)
+
+
+Asteroid 1(big one ) (derived from base)
+    Methods
+        - change life(takes 2 missile)
+        - changeSpeed
+
+asteroid 2(boss)
+    Methods
+        - change life
+        - subasteroids
+        - subasteroid movements
+
+Asteroid 3(split one)
+    Methods
+        -splitOnDestruction
+        -movementOfNewParticles
+        
