@@ -10,7 +10,6 @@
 # Missiles 
     -image
     -size
-    -missile which doesnt get destoryed on colliding with any aasteroid it just gets reflected 
     -missile with a very large impact parameter
     -missile on blast decreases the speed of all other asteroids on screen
 # asteroids 
