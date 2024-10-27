@@ -63,4 +63,7 @@ Asteroid 3(split one)
     Methods
         -splitOnDestruction
         -movementOfNewParticles
-        
+
+Asteroid 4 (fast and slow)
+    Methods
+        -changeSpeed    
