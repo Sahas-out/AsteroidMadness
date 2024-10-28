@@ -104,7 +104,7 @@ BossAsteroid (derived from base class: Asteroid )
         -image 
     Methods 
         Constructor
-            - change life 
+        - change life 
         - subasteroids 
         - subasteroid movements
 
@@ -171,4 +171,4 @@ CooldownReductionPowerUp(PowerUp):
     Methods
         -launching missile (defines the tracjectory of missile)
         -cooldown controller
-        -
+        
