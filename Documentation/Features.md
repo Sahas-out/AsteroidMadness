@@ -12,5 +12,3 @@
 # Powerups
     -no cooldown on any one satellite for let's say 10sec, you can fire continuosly for 10 sec.
     -reduces cooldown period for all or some shooter.
-
-
