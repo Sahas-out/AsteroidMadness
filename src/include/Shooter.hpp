@@ -43,13 +43,22 @@ class NormalShooter:public Shooter
 class SpreadShooter:public Shooter
 {
     private:
-        
-       
         settings::shooterType type = settings::shooterType::spreadShooter;
         int missileCount ;
     public:
-        SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod = settings::defaultCooldown);
+        SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod = settings::spreadCooldown);
         std::vector<Missile*>* shoot() override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
+};
+class RapidShooter:public Shooter
+{
+    private:
+    settings::shooterType type= settings::shooterType::rapidShooter;
+    int missileCount;
+    public:
+    RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod = settings::rapidCooldown);
+    std::vector<Missile*> *shoot() override;
+    void draw(sf::RenderWindow & window) override;
+    void makeAbstract() override;
 };

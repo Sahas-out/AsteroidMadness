@@ -1,6 +1,4 @@
 #include"../include/Shooter.hpp"
-
-
 Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :cooldownPeriod(inCooldownPeriod),position(inPosition),attachedMissile(inMissile)
 {
@@ -61,22 +59,31 @@ std::vector<Missile*>* NormalShooter::shoot() //override
 }
 void NormalShooter::draw(sf::RenderWindow & window)
 {
-    // window.draw(*graphic);
-    sf::Texture texture ;
-    texture.loadFromFile(settings::normalShooterImage);
-    sf::Sprite sprite;
-    sprite.setPosition(100,200);
-    sprite.setTexture(texture);
+    // // window.draw(*graphic);
+    // sf::Texture texture ;
+    // texture.loadFromFile(settings::normalShooterImage);
+    // sf::Sprite sprite;
+    // sprite.setPosition(100,200);
+    // sprite.setTexture(texture);
+    
+    // // Set the scale to maintain the original aspect ratio
+    // float width = 200; // desired width
+    // float height = width / (texture.getSize().x / (float)texture.getSize().y);
+    // sprite.setScale(width / texture.getSize().x, height / texture.getSize().y);
+    // window.draw(sprite);
+      imageTexture.loadFromFile(settings::normalShooterImage);
+   graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+    graphics.setTexture(imageTexture);
     
     // Set the scale to maintain the original aspect ratio
-    float width = 200; // desired width
-    float height = width / (texture.getSize().x / (float)texture.getSize().y);
-    sprite.setScale(width / texture.getSize().x, height / texture.getSize().y);
-    window.draw(sprite);
+    float width = 100; // desired width
+    float height = width / (imageTexture.getSize().x / (float)imageTexture.getSize().y);
+    graphics.setScale(width / imageTexture.getSize().x, height / imageTexture.getSize().y);
+    window.draw(graphics);
 }
 void NormalShooter::makeAbstract(){}
 
-SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod = settings::defaultCooldown)
+SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod){}
 std::vector<Missile*>* SpreadShooter::shoot() //override
 {
@@ -90,13 +97,38 @@ std::vector<Missile*>* SpreadShooter::shoot() //override
 void SpreadShooter::draw(sf::RenderWindow & window){
   
     imageTexture.loadFromFile(settings::spreadShooterImage);
-   graphics.setPosition(window.getSize().x * 0.2f, window.getSize().y * 0.3f);
+   graphics.setPosition(window.getView().getSize().x * 0.44f, window.getView().getSize().y * 0.9f);
     graphics.setTexture(imageTexture);
     
     // Set the scale to maintain the original aspect ratio
-    float width = 200; // desired width
+    float width = 100; // desired width
     float height = width / (imageTexture.getSize().x / (float)imageTexture.getSize().y);
     graphics.setScale(width / imageTexture.getSize().x, height / imageTexture.getSize().y);
     window.draw(graphics);
 }
 void SpreadShooter::makeAbstract(){}
+RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
+:Shooter(inPosition,inMissile,inCooldownPeriod){}
+
+std::vector<Missile*>* RapidShooter::shoot() //override
+{
+    if(!canShoot()){return nullptr;}
+    resetTimer();
+    std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
+    // add missiles to it
+    // use missile functions to add multiple missiles on screen
+    return shootingMissiles;
+}
+void RapidShooter::draw(sf::RenderWindow &window){
+    
+    imageTexture.loadFromFile(settings::rapidShooterImage);
+   graphics.setPosition(window.getView().getSize().x * 0.875f, window.getView().getSize().y * 0.9f);
+    graphics.setTexture(imageTexture);
+    
+    // Set the scale to maintain the original aspect ratio
+    float width = 100; // desired width
+    float height = width / (imageTexture.getSize().x / (float)imageTexture.getSize().y);
+    graphics.setScale(width / imageTexture.getSize().x, height / imageTexture.getSize().y);
+    window.draw(graphics);
+}
+void RapidShooter::makeAbstract(){}

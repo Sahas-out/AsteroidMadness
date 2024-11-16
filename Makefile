@@ -2,7 +2,7 @@ include_path = "lib/SFML-2.6.1/include"
 link_path = "lib/SFML-2.6.1/lib"
 cpp_files_path = src/classes/
 obj_files_path = bin/
-all:compile
+all:compile link
 compile:
 	g++ -c $(cpp_files_path)Shooter.cpp -I $(include_path) -o $(obj_files_path)Shooter.o
 	g++ -c $(cpp_files_path)main.cpp -I $(include_path) -o $(obj_files_path)main.o
