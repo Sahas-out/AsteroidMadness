@@ -41,7 +41,7 @@ const sf::FloatRect Asteroid::getBounds() const
 {
     return this->sprite.getGlobalBounds();
 }
-
+// rename this move  
 void Asteroid::update()
 {
     this->sprite.move(0.0f,this->speed);
