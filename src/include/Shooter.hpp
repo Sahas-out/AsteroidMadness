@@ -14,6 +14,8 @@ class Shooter
         settings::missileType  attachedMissile;
         bool    onStart;
     protected:    
+        sf::Texture imageTexture;
+        sf::Sprite graphics;
         virtual sf::ConvexShape* getShooterShape();
     public:
         Shooter(sf::Vector2f inPosition,settings::missileType inMissile ,sf::Time inCooldownPeriod = settings::defaultCooldown);
@@ -29,7 +31,7 @@ class Shooter
 class NormalShooter:public Shooter
 {
     private:
-        sf::ConvexShape* graphic;
+        //sf::ConvexShape* graphic;
         sf::Texture graphicTexture;
         settings::shooterType type = settings::shooterType::normalShooter;
     public:
@@ -37,4 +39,26 @@ class NormalShooter:public Shooter
         std::vector<Missile*>* shoot() override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
+};
+class SpreadShooter:public Shooter
+{
+    private:
+        settings::shooterType type = settings::shooterType::spreadShooter;
+        int missileCount ;
+    public:
+        SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod = settings::spreadCooldown);
+        std::vector<Missile*>* shoot() override;
+        void draw(sf::RenderWindow & window) override;
+        void makeAbstract() override;
+};
+class RapidShooter:public Shooter
+{
+    private:
+    settings::shooterType type= settings::shooterType::rapidShooter;
+    int missileCount;
+    public:
+    RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod = settings::rapidCooldown);
+    std::vector<Missile*> *shoot() override;
+    void draw(sf::RenderWindow & window) override;
+    void makeAbstract() override;
 };
