@@ -1,97 +1,101 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <vector>
-#include <string>
 #include <iostream>
+#include <string>
 #include <chrono>
 #include <algorithm>
 
-// Base Missile Class
+// Supporting Structures
+struct Trajectory {
+    float dx, dy; // Direction of movement
+};
+
+struct Coordinates {
+    int x, y; // Position on a 2D plane
+};
+
+struct Image {
+    sf::Texture texture; // SFML texture for the missile image
+    sf::Sprite sprite;   // SFML sprite for rendering
+};
+
+// Missile Class
 class Missile {
-protected:
-    sf::Vector2f position;            // Current position
-    sf::Vector2f directionOfMovement; // Movement vector
-    sf::Vector2f speed;               // Speed vector
-    int impactRadius;                 // Blast radius
-    bool isAlive;                     // Alive or blasting
-    bool specialEffectOnBlast;        // Special effects on blast
-    sf::Texture texture;              // Missile texture
-    sf::Sprite sprite;                // Missile sprite
-    std::string type;                 // Type of missile
+private:
+    int speed;
+    int size;
+    Trajectory trajectory;
+    int impactPerimeter;
+    bool specialEffectOnBlast;
+    Coordinates targetCoordinates;
+    Image image;
+    std::string type;
 
 public:
-    Missile(const std::string& imagePath, sf::Vector2f startPos, sf::Vector2f dir, sf::Vector2f spd, const std::string& missileType)
-        : position(startPos), directionOfMovement(dir), speed(spd), impactRadius(50),
-          isAlive(true), specialEffectOnBlast(false), type(missileType) {
-        if (!texture.loadFromFile(imagePath)) {
+    // Constructor
+    Missile(const std::string& imagePath, int x, int y, int spd, Trajectory traj, const std::string& missileType)
+        : speed(spd), size(10), trajectory(traj), impactPerimeter(50), specialEffectOnBlast(false),
+          targetCoordinates({x, y}), type(missileType) {
+        if (!image.texture.loadFromFile(imagePath)) {
             std::cerr << "Failed to load image: " << imagePath << std::endl;
         }
-        sprite.setTexture(texture);
-        sprite.setPosition(position);
-        sprite.setScale(0.1f, 0.1f); // Scaling down sprite
+        image.sprite.setTexture(image.texture);
+        image.sprite.setPosition(static_cast<float>(x), static_cast<float>(y));
+        image.sprite.setScale(0.1f, 0.1f); // Scale down the missile
     }
 
-    virtual void move() {
-        position.x += directionOfMovement.x * speed.x;
-        position.y += directionOfMovement.y * speed.y;
-        sprite.setPosition(position);
-}
-
-
-    virtual void draw(sf::RenderWindow& window) const {
-        if (isAlive) {
-            window.draw(sprite);
-        }
+    // Move the missile
+    void move() {
+        targetCoordinates.x += static_cast<int>(trajectory.dx * speed);
+        targetCoordinates.y += static_cast<int>(trajectory.dy * speed);
+        image.sprite.setPosition(static_cast<float>(targetCoordinates.x), static_cast<float>(targetCoordinates.y));
     }
 
-    virtual void effectOnBlast() {
+    // Get the missile image
+    Image getImage() const {
+        return image;
+    }
+
+    // Get the missile type
+    std::string getType() const {
+        return type;
+    }
+
+    // Set trajectory
+    void setTrajectory(const Trajectory& traj) {
+        trajectory = traj;
+    }
+
+    // Set the impact perimeter
+    void setImpactPerimeter(int perimeter) {
+        impactPerimeter = perimeter;
+    }
+
+    // Effect on blast (virtual method)
+    void effectOnBlast() {
         specialEffectOnBlast = true;
-        std::cout << "Default blast effect triggered!\n";
+        std::cout << "Blast effect triggered!\n";
     }
 
-    int getImpactRadius() const { return impactRadius; }
-    std::string getType() const { return type; }
+    // Draw the missile
+    void draw(sf::RenderWindow& window) const {
+        window.draw(image.sprite);
+    }
+
+    // Check if missile is out of bounds
     bool isOutOfBounds(int windowWidth, int windowHeight) const {
-        return position.x < 0 || position.x > windowWidth || position.y < 0 || position.y > windowHeight;
+        return targetCoordinates.x < 0 || targetCoordinates.x > windowWidth ||
+               targetCoordinates.y < 0 || targetCoordinates.y > windowHeight;
     }
 };
 
-// Derived Missile Class for Effects
-class SpecialMissile : public Missile {
-private:
-    sf::SoundBuffer blastSoundBuffer;
-    sf::Sound blastSound;
-
-public:
-    SpecialMissile(const std::string& imagePath, sf::Vector2f startPos, sf::Vector2f dir, sf::Vector2f spd)
-        : Missile(imagePath, startPos, dir, spd, "SpecialMissile") {
-        if (blastSoundBuffer.loadFromFile("blast.wav")) { // Add  sound file path
-            blastSound.setBuffer(blastSoundBuffer);
-        }
-    }
-
-    void effectOnBlast() override {
-        specialEffectOnBlast = true;
-        blastSound.play();
-        std::cout << "Special missile blast effect triggered!\n";
-    }
-
-    void draw(sf::RenderWindow& window) const override {
-        if (isAlive) {
-            window.draw(sprite); // Render as usual
-        } else {
-            // Render special blast graphics
-        }
-    }
-};
-
-// Main Function
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Missile Game");
+    // Create the SFML window
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Asteroid Game - Unified Missile Code");
     window.setFramerateLimit(60);
 
-    std::vector<Missile*> missiles; // Storing base and derived objects
-    std::string missileImage = "missile.png"; // Replace with your image path
+    std::vector<Missile> missiles;
+    std::string missileImage = "missile.png"; // Replace with the path to your missile image
 
     // Timer for automatic missile spawning
     auto lastSpawnTime = std::chrono::steady_clock::now();
@@ -104,65 +108,44 @@ int main() {
                 window.close();
             }
 
-            // Spawn standard missile on spacebar press
+            // Spawn missile on spacebar press
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
-                sf::Vector2f startPos(100, 550);    // Start position
-                sf::Vector2f dir(0.0f, -1.0f);     // Direction up
-                sf::Vector2f spd(0.0f, 5.0f);      // Speed scaled for x and y)
-
-                missiles.push_back(new Missile(missileImage, startPos, dir, spd, "PlayerMissile"));
-            }
-
-            // Spawn special missile on 'S' press
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::S) {
-                sf::Vector2f startPos(400, 550);
-                sf::Vector2f dir(0.0f, -1.0f);
-                sf::Vector2f spd(0.0f, 5.0f);
-
-                missiles.push_back(new SpecialMissile(missileImage, startPos, dir, spd));
+                Trajectory trajectory = {0.0f, -1.0f}; // Moves upward
+                Missile missile(missileImage, 400, 550, 5, trajectory, "PlayerMissile");
+                missiles.push_back(missile);
             }
         }
 
         // Automatically spawn missiles
         auto currentTime = std::chrono::steady_clock::now();
         if (std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastSpawnTime).count() > spawnInterval) {
-            sf::Vector2f startPos(rand() % 800, 550); // Random X position
-            sf::Vector2f dir(0.0f, -1.0f);           // Direction
-            sf::Vector2f spd(0.0f, 3.0f);            // Speed
-
-            missiles.push_back(new Missile(missileImage, startPos, dir, spd, "EnemyMissile"));
+            Trajectory trajectory = {0.0f, -1.0f};
+            int randomX = rand() % 800; // Random X position
+            Missile missile(missileImage, randomX, 550, 3, trajectory, "EnemyMissile");
+            missiles.push_back(missile);
             lastSpawnTime = currentTime;
         }
 
-        // Move and update missiles
+        // Move missiles
         for (auto& missile : missiles) {
-            missile->move();
+            missile.move();
         }
 
-        // Remove out-of-bounds missiles
+        // Remove missiles that go out of bounds
         missiles.erase(
             std::remove_if(missiles.begin(), missiles.end(),
-                [&window](Missile* missile) {
-                    if (missile->isOutOfBounds(window.getSize().x, window.getSize().y)) {
-                        delete missile; // Clean up memory
-                        return true;
-                    }
-                    return false;
+                [&window](const Missile& missile) {
+                    return missile.isOutOfBounds(window.getSize().x, window.getSize().y);
                 }),
             missiles.end()
         );
 
-        // Render missiles
+        // Render
         window.clear(sf::Color::Black);
         for (const auto& missile : missiles) {
-            missile->draw(window);
+            missile.draw(window);
         }
         window.display();
-    }
-
-    // Clean up dynamically allocated missiles
-    for (auto& missile : missiles) {
-        delete missile;
     }
 
     return 0;
