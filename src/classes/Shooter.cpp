@@ -1,4 +1,4 @@
-#include"../include/Shooter.hpp"
+#include"Shooter.hpp"
 Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :cooldownPeriod(inCooldownPeriod),position(inPosition),attachedMissile(inMissile)
 {
@@ -15,23 +15,6 @@ void Shooter::resetTimer()
     if(onStart == true){onStart ==false;}
     fireInterval.restart();
 }
-sf::ConvexShape* Shooter::getShooterShape()
-{
-    sf::ConvexShape* semicircle = new sf::ConvexShape();
-    semicircle->setPointCount(100); // number of points to define the semicircle
-
-    float radius = 50.0f; // radius of the semicircle
-    float angle =  M_PI; // 180 degrees in radians
-
-    for (int i = 0; i < semicircle->getPointCount(); i++) {
-        float a = -(angle * i / semicircle->getPointCount());
-        sf::Vector2f point(radius * std::cos(a), radius * std::sin(a));
-        semicircle->setPoint(i, point);
-    }
-
-    semicircle->setPosition(0, -100); // set the position
-    return semicircle;
-}
 void Shooter::draw(sf::RenderWindow &window){}
 void Shooter::toggleCooldown(bool active)
 {
@@ -45,9 +28,9 @@ void Shooter::setCooldownPeriod(sf::Time t)
 NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
-    // graphic = this->getShooterShape();
-    // graphicTexture.loadFromFile(settings::normalShooterTexture);
-    // graphic->setTexture(&graphicTexture);
+    graphicTexture.loadFromFile(settings::normalShooterImage);
+    graphics.setTexture(graphicTexture);
+    type = settings::shooterType::normalShooter;
 }
 std::vector<Missile*>* NormalShooter::shoot() //override
 {
@@ -71,20 +54,24 @@ void NormalShooter::draw(sf::RenderWindow & window)
     // float height = width / (texture.getSize().x / (float)texture.getSize().y);
     // sprite.setScale(width / texture.getSize().x, height / texture.getSize().y);
     // window.draw(sprite);
-      imageTexture.loadFromFile(settings::normalShooterImage);
-   graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
-    graphics.setTexture(imageTexture);
+    graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
-    float height = width / (imageTexture.getSize().x / (float)imageTexture.getSize().y);
-    graphics.setScale(width / imageTexture.getSize().x, height / imageTexture.getSize().y);
+    float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
+    graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
     window.draw(graphics);
 }
 void NormalShooter::makeAbstract(){}
 
 SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
-:Shooter(inPosition,inMissile,inCooldownPeriod){}
+:Shooter(inPosition,inMissile,inCooldownPeriod)
+{
+    type = settings::shooterType::spreadShooter;
+    graphicTexture.loadFromFile(settings::spreadShooterImage);
+    graphics.setTexture(graphicTexture);
+
+}
 std::vector<Missile*>* SpreadShooter::shoot() //override
 {
     if(!canShoot()){return nullptr;}
@@ -94,21 +81,25 @@ std::vector<Missile*>* SpreadShooter::shoot() //override
     // use missile functions to add multiple missiles on screen
     return shootingMissiles;
 }
-void SpreadShooter::draw(sf::RenderWindow & window){
-  
-    imageTexture.loadFromFile(settings::spreadShooterImage);
-   graphics.setPosition(window.getView().getSize().x * 0.44f, window.getView().getSize().y * 0.9f);
-    graphics.setTexture(imageTexture);
+void SpreadShooter::draw(sf::RenderWindow & window)
+{
+    graphics.setPosition(window.getView().getSize().x * 0.44f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
-    float height = width / (imageTexture.getSize().x / (float)imageTexture.getSize().y);
-    graphics.setScale(width / imageTexture.getSize().x, height / imageTexture.getSize().y);
+    float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
+    graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
     window.draw(graphics);
 }
 void SpreadShooter::makeAbstract(){}
 RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
-:Shooter(inPosition,inMissile,inCooldownPeriod){}
+:Shooter(inPosition,inMissile,inCooldownPeriod)
+{
+    type = settings::shooterType::rapidShooter;
+    graphicTexture.loadFromFile(settings::rapidShooterImage);
+    graphics.setTexture(graphicTexture);
+
+}
 
 std::vector<Missile*>* RapidShooter::shoot() //override
 {
@@ -121,14 +112,29 @@ std::vector<Missile*>* RapidShooter::shoot() //override
 }
 void RapidShooter::draw(sf::RenderWindow &window){
     
-    imageTexture.loadFromFile(settings::rapidShooterImage);
-   graphics.setPosition(window.getView().getSize().x * 0.875f, window.getView().getSize().y * 0.9f);
-    graphics.setTexture(imageTexture);
+    graphics.setPosition(window.getView().getSize().x * 0.875f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
-    float height = width / (imageTexture.getSize().x / (float)imageTexture.getSize().y);
-    graphics.setScale(width / imageTexture.getSize().x, height / imageTexture.getSize().y);
+    float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
+    graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
     window.draw(graphics);
 }
 void RapidShooter::makeAbstract(){}
+// sf::ConvexShape* Shooter::getShooterShape()
+// {
+//     sf::ConvexShape* semicircle = new sf::ConvexShape();
+//     semicircle->setPointCount(100); // number of points to define the semicircle
+
+//     float radius = 50.0f; // radius of the semicircle
+//     float angle =  M_PI; // 180 degrees in radians
+
+//     for (int i = 0; i < semicircle->getPointCount(); i++) {
+//         float a = -(angle * i / semicircle->getPointCount());
+//         sf::Vector2f point(radius * std::cos(a), radius * std::sin(a));
+//         semicircle->setPoint(i, point);
+//     }
+
+//     semicircle->setPosition(0, -100); // set the position
+//     return semicircle;
+// }
