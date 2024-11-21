@@ -1,5 +1,7 @@
+
 #include"Shooter.hpp"
 // how to implement active inactive locked state behaviours
+
 Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :cooldownPeriod(inCooldownPeriod),position(inPosition),attachedMissile(inMissile)
 {
