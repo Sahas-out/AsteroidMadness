@@ -1,4 +1,4 @@
-#include"Shooter.hpp"
+#include "Shooter.hpp"
 Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :cooldownPeriod(inCooldownPeriod),position(inPosition),attachedMissile(inMissile)
 {
