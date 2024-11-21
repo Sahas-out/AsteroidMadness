@@ -1,21 +1,35 @@
-#include "Shooter.hpp"
+
+#include"Shooter.hpp"
+// how to implement active inactive locked state behaviours
+
 Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :cooldownPeriod(inCooldownPeriod),position(inPosition),attachedMissile(inMissile)
 {
-    cooldownEnabled = false;
-    onStart = true;
+    cooldownEnabled = true;
+    onStart = false;
+    state = State::LOCKED;
 }
-std::vector<Missile*>* Shooter::shoot(){return nullptr;}
-bool Shooter::canShoot()
+std::vector<Missile*>* Shooter::shoot()
 {
-    return onStart || (!cooldownEnabled) || fireInterval.getElapsedTime() >= cooldownPeriod ;
+    checkState();
+    if(onStart && state == State::ACTIVE)
+    {
+        onStart = false;
+    }
+    if(state == State::ACTIVE)
+    {
+        resetTimer();
+    }
+    return nullptr;
 }
 void Shooter::resetTimer()
 {
-    if(onStart == true){onStart ==false;}
     fireInterval.restart();
 }
-void Shooter::draw(sf::RenderWindow &window){}
+void Shooter::draw(sf::RenderWindow &window)
+{
+    checkState();
+}
 void Shooter::toggleCooldown(bool active)
 {
     cooldownEnabled = active;
@@ -24,6 +38,32 @@ void Shooter::setCooldownPeriod(sf::Time t)
 {
     cooldownPeriod = t;
 }
+void Shooter::unlock()
+{
+    if(state == State::LOCKED)
+    {
+        state = State::ACTIVE;
+        onStart = true;
+    }
+}
+void Shooter::checkState()
+{
+    if(state == State::LOCKED){}
+    else if(onStart)
+    {
+        state = State::ACTIVE;
+    }
+    else if(cooldownEnabled && fireInterval.getElapsedTime() < cooldownPeriod)
+    {
+        state = State::INACTIVE;
+    }
+    else
+    {
+        state = State::ACTIVE;
+    }
+}
+
+
 
 NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
@@ -34,26 +74,27 @@ NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMis
 }
 std::vector<Missile*>* NormalShooter::shoot() //override
 {
-    if(!canShoot()){return nullptr;}
-    resetTimer();
+    Shooter::shoot();
+    if(state != State::ACTIVE){return nullptr;}
     std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
     // add missiles to it
     return shootingMissiles;
 }
 void NormalShooter::draw(sf::RenderWindow & window)
 {
-    // // window.draw(*graphic);
-    // sf::Texture texture ;
-    // texture.loadFromFile(settings::normalShooterImage);
-    // sf::Sprite sprite;
-    // sprite.setPosition(100,200);
-    // sprite.setTexture(texture);
-    
-    // // Set the scale to maintain the original aspect ratio
-    // float width = 200; // desired width
-    // float height = width / (texture.getSize().x / (float)texture.getSize().y);
-    // sprite.setScale(width / texture.getSize().x, height / texture.getSize().y);
-    // window.draw(sprite);
+    Shooter::draw(window);
+    if(state == State::ACTIVE)
+    {
+
+    }
+    else if (state == State::INACTIVE)
+    {
+
+    }
+    else
+    {
+
+    }
     graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
@@ -63,6 +104,10 @@ void NormalShooter::draw(sf::RenderWindow & window)
     window.draw(graphics);
 }
 void NormalShooter::makeAbstract(){}
+
+
+
+
 
 SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
@@ -74,15 +119,27 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
 }
 std::vector<Missile*>* SpreadShooter::shoot() //override
 {
-    if(!canShoot()){return nullptr;}
-    resetTimer();
+    Shooter::shoot();
+    if(state != State::ACTIVE){return nullptr;}
     std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
     // add missiles to it
-    // use missile functions to add multiple missiles on screen
     return shootingMissiles;
 }
 void SpreadShooter::draw(sf::RenderWindow & window)
 {
+    Shooter::draw(window);
+    if(state == State::ACTIVE)
+    {
+
+    }
+    else if (state == State::INACTIVE)
+    {
+
+    }
+    else
+    {
+
+    }
     graphics.setPosition(window.getView().getSize().x * 0.44f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
@@ -92,26 +149,42 @@ void SpreadShooter::draw(sf::RenderWindow & window)
     window.draw(graphics);
 }
 void SpreadShooter::makeAbstract(){}
+
+
+
+
+
 RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
     type = settings::shooterType::rapidShooter;
     graphicTexture.loadFromFile(settings::rapidShooterImage);
     graphics.setTexture(graphicTexture);
-
 }
 
 std::vector<Missile*>* RapidShooter::shoot() //override
 {
-    if(!canShoot()){return nullptr;}
-    resetTimer();
+    Shooter::shoot();
+    if(state != State::ACTIVE){return nullptr;}
     std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
     // add missiles to it
-    // use missile functions to add multiple missiles on screen
     return shootingMissiles;
 }
-void RapidShooter::draw(sf::RenderWindow &window){
-    
+void RapidShooter::draw(sf::RenderWindow &window)
+{
+    Shooter::draw(window);
+    if(state == State::ACTIVE)
+    {
+
+    }
+    else if (state == State::INACTIVE)
+    {
+
+    }
+    else
+    {
+
+    }
     graphics.setPosition(window.getView().getSize().x * 0.875f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
@@ -121,6 +194,9 @@ void RapidShooter::draw(sf::RenderWindow &window){
     window.draw(graphics);
 }
 void RapidShooter::makeAbstract(){}
+
+
+
 // sf::ConvexShape* Shooter::getShooterShape()
 // {
 //     sf::ConvexShape* semicircle = new sf::ConvexShape();
