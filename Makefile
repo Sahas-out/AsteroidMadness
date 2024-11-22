@@ -4,18 +4,22 @@ link_path = ./lib/SFML-2.5.1/lib
 cpp_files_path = ./src/classes/
 obj_files_path = ./bin/
 
+# Source files and object files
+CPP_FILES = $(wildcard $(cpp_files_path)*.cpp)
+OBJ_FILES = $(patsubst $(cpp_files_path)%.cpp, $(obj_files_path)%.o, $(CPP_FILES))
+
 # Target for all steps
 all: compile link run clean
 
 # Compile step
-compile:
-	g++ -c $(cpp_files_path)main.cpp $(include_path) -o $(obj_files_path)main.o
-	g++ -c $(cpp_files_path)Game.cpp $(include_path) -o $(obj_files_path)Game.o
-	g++ -c $(cpp_files_path)Asteroid.cpp $(include_path) -o $(obj_files_path)Asteroid.o
+compile: $(OBJ_FILES)
+
+$(obj_files_path)%.o: $(cpp_files_path)%.cpp
+	g++ -c $< $(include_path) -o $@
 
 # Link step
 link:
-	g++ $(obj_files_path)main.o $(obj_files_path)Game.o $(obj_files_path)Asteroid.o -o app.exe -L $(link_path) -lsfml-system -lsfml-window -lsfml-graphics
+	g++ $(OBJ_FILES) -o app.exe -L $(link_path) -lsfml-system -lsfml-window -lsfml-graphics
 
 # Run step
 run:

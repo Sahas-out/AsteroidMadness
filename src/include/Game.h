@@ -1,28 +1,20 @@
 #pragma once
 
-#include<Asteroid.h>
+#include <AsteroidManager.h>
 
 class Game
 {
 private:
     sf::RenderWindow* window;
-
-    //Astorid 
-    float spawnTimer;
-    float spawnTimerMax;
-    std::vector<Asteroid*> asteroids; 
-
-    //private functions
-    void initwindow(); // for intializing the window
-    void initAstroid();
+    AsteroidManager* asteroidManager = new AsteroidManager();
 
 public:
+    void initWindow();
+    void initAsteroidManager();
     Game();
-    virtual ~Game();
-
-    //Functions
+    ~Game();
+ 
     void run();
-    void updateAsteroids();
-    void update();
-    void render();
+
 };
+
