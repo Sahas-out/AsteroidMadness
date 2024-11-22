@@ -5,7 +5,11 @@ int main()
 {   
     sf::RenderWindow window(sf::VideoMode(800,600),"title");
     sf::Vector2f wrtWindow=window.getView().getSize();
-    std::vector<sf::Vector2f>coordinates={sf::Vector2f(wrtWindow.x * 0.0f, wrtWindow.y * 0.9f),sf::Vector2f(wrtWindow.x * 0.44f, wrtWindow.y * 0.9f),sf::Vector2f(wrtWindow.x * 0.875f, wrtWindow.y * 0.9f)};
+    std::vector<sf::Vector2f>coordinates={
+        sf::Vector2f(wrtWindow.x * 0.0f, wrtWindow.y * 0.9f),
+        sf::Vector2f(wrtWindow.x * 0.44f, wrtWindow.y * 0.9f),
+        sf::Vector2f(wrtWindow.x * 0.875f, wrtWindow.y * 0.9f)
+        };
     NormalShooter n = NormalShooter(coordinates[0],settings::missileType::normalMissile);
     SpreadShooter s = SpreadShooter(coordinates[1],settings::missileType::normalMissile);
     RapidShooter r = RapidShooter(coordinates[2],settings::missileType::normalMissile);
