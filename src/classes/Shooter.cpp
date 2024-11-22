@@ -8,6 +8,10 @@ Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Tim
     cooldownEnabled = true;
     onStart = false;
     state = State::LOCKED;
+    lockTexture.loadFromFile(settings::lockImage);
+    invalidSignTexture.loadFromFile(settings::invalidSignImage);
+    lock.setTexture(lockTexture);
+    invalidSign.setTexture(invalidSignTexture);
 }
 std::vector<Missile*>* Shooter::shoot()
 {
@@ -83,25 +87,39 @@ std::vector<Missile*>* NormalShooter::shoot() //override
 void NormalShooter::draw(sf::RenderWindow & window)
 {
     Shooter::draw(window);
-    if(state == State::ACTIVE)
-    {
-
-    }
-    else if (state == State::INACTIVE)
-    {
-
-    }
-    else
-    {
-
-    }
     graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
+    if(state == State::INACTIVE)
+    {
+        sf::Color color = graphics.getColor();
+        color.a = 64;
+        graphics.setColor(color);
+        invalidSign.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        window.draw(graphics);
+        window.draw(invalidSign);
+    }
+    else if (state == State::LOCKED)
+    {
+        sf::Color color = graphics.getColor();
+        color.a = 64;
+        graphics.setColor(color);
+        lock.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        float w = 10;
+        float h = w / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
+
+        lock.setScale(w / graphicTexture.getSize().x, h / graphicTexture.getSize().y);
+
+        window.draw(graphics);
+        window.draw(lock);
+    }
+    else
+    {
     window.draw(graphics);
+    }
 }
 void NormalShooter::makeAbstract(){}
 
@@ -128,25 +146,34 @@ std::vector<Missile*>* SpreadShooter::shoot() //override
 void SpreadShooter::draw(sf::RenderWindow & window)
 {
     Shooter::draw(window);
-    if(state == State::ACTIVE)
-    {
-
-    }
-    else if (state == State::INACTIVE)
-    {
-
-    }
-    else
-    {
-
-    }
     graphics.setPosition(window.getView().getSize().x * 0.44f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
+    if(state == State::INACTIVE)
+    {
+        sf::Color color = graphics.getColor();
+        color.a = 64;
+        graphics.setColor(color);
+        invalidSign.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        window.draw(graphics);
+        window.draw(invalidSign);
+    }
+    else if (state == State::LOCKED)
+    {
+        sf::Color color = graphics.getColor();
+        color.a = 64;
+        graphics.setColor(color);
+        lock.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        window.draw(graphics);
+        window.draw(lock);
+    }
+    else
+    {
     window.draw(graphics);
+    }
 }
 void SpreadShooter::makeAbstract(){}
 
@@ -173,25 +200,35 @@ std::vector<Missile*>* RapidShooter::shoot() //override
 void RapidShooter::draw(sf::RenderWindow &window)
 {
     Shooter::draw(window);
-    if(state == State::ACTIVE)
-    {
 
-    }
-    else if (state == State::INACTIVE)
-    {
-
-    }
-    else
-    {
-
-    }
     graphics.setPosition(window.getView().getSize().x * 0.875f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
+    if(state == State::INACTIVE)
+    {
+        sf::Color color = graphics.getColor();
+        color.a = 64;
+        graphics.setColor(color);
+        invalidSign.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        window.draw(graphics);
+        window.draw(invalidSign);
+    }
+    else if (state == State::LOCKED)
+    {
+        sf::Color color = graphics.getColor();
+        color.a = 64;
+        graphics.setColor(color);
+        lock.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        window.draw(graphics);
+        window.draw(lock);
+    }
+    else
+    {
     window.draw(graphics);
+    }
 }
 void RapidShooter::makeAbstract(){}
 

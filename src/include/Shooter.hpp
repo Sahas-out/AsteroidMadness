@@ -20,6 +20,10 @@ class Shooter
             INACTIVE
         };
         State state;
+        sf::Sprite lock;
+        sf::Texture lockTexture;
+        sf::Sprite invalidSign;
+        sf::Texture invalidSignTexture;
     public:
         Shooter(sf::Vector2f inPosition,settings::missileType inMissile ,sf::Time inCooldownPeriod = settings::defaultCooldown);
         void toggleCooldown(bool active);
