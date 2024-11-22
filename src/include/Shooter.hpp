@@ -12,19 +12,28 @@ class Shooter
         bool    cooldownEnabled;
         settings::missileType  attachedMissile;
         bool    onStart;
-    // protected:    
-        // sf::Texture imageTexture;
-        // sf::Sprite graphics;
-        // virtual sf::ConvexShape* getShooterShape();
+    protected:
+        enum class State
+        {
+            LOCKED,
+            ACTIVE,
+            INACTIVE
+        };
+        State state;
+        sf::Sprite lock;
+        sf::Texture lockTexture;
+        sf::Sprite invalidSign;
+        sf::Texture invalidSignTexture;
     public:
         Shooter(sf::Vector2f inPosition,settings::missileType inMissile ,sf::Time inCooldownPeriod = settings::defaultCooldown);
         void toggleCooldown(bool active);
         void setCooldownPeriod(sf::Time t);
-        bool canShoot();
+        void checkState();
         void resetTimer();
         virtual std::vector<Missile*>* shoot();
         virtual void draw(sf::RenderWindow& window );
         virtual void makeAbstract() = 0;
+        void unlock();
 };
 
 class NormalShooter:public Shooter
