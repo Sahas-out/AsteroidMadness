@@ -5,10 +5,7 @@ Missile::Missile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
     targetPositon = inTargetPosition;
     
     direction = targetPositon - inPosition;
-    double magnitude = sqrt((direction.x*direction.x) + (direction.y*direction.y));
-    direction.x/=magnitude;
-    direction.y/=magnitude;
-    
+    settings::normalise(&direction);
     speed = settings::missileSpeed;
     blastRadius = settings::blastRadius;
     explodeDuration = settings::explodeDuration;
@@ -17,8 +14,9 @@ Missile::Missile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
 void Missile::move()
 {
     if(state != State::ALIVE){return;}
-    position.x += direction.x*speed;
-    position.y += direction.y*speed;
+    // position.x += direction.x*speed;
+    // position.y += direction.y*speed;
+    position = position + settings::scalarProduct(direction,speed);
 }
 void Missile::checkState()
 {
@@ -30,7 +28,6 @@ void Missile::checkState()
     {
         state = State::DEAD;
     }
-    // else if (this->position.x <  ) handle when missile goes out of window screen
     return;
 }
 void Missile::draw(sf::RenderWindow &window)
@@ -58,10 +55,17 @@ Missile::State Missile::getState()
 {
     return state;
 }
-std::vector<settings::Circle> Missile::getBounds()
+settings::Circle Missile::getBounds()
 {
-    return std::vector<settings::Circle>();
+    return settings::Circle();
 }
+const sf::Vector2f& Missile::getDirection()
+{
+    return direction;
+}
+
+
+
 NormalMissile::NormalMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
 :Missile(inPosition,inTargetPosition),
 line(sf::Lines,2),
@@ -75,7 +79,7 @@ explodeCircle(blastRadius)
     line[1].color = sf::Color::Red;
     aliveCircle.setFillColor(sf::Color::Blue);
     explodeCircle.setFillColor(sf::Color::White);
-    explodeCircle.setPosition(getTargetPositon());
+    explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
 }
 
 void NormalMissile::explode()
@@ -89,7 +93,7 @@ void NormalMissile::draw(sf::RenderWindow &window)
     if(state == State::ALIVE)
     {
         line[1].position = getPositon();
-        aliveCircle.setPosition(getPositon());
+        aliveCircle.setPosition(getPositon() - sf::Vector2f(aliveCircle.getRadius(),aliveCircle.getRadius()));
         window.draw(line);
         window.draw(aliveCircle);
     }
@@ -99,16 +103,162 @@ void NormalMissile::draw(sf::RenderWindow &window)
         window.draw(explodeCircle);
     }
 }
-std::vector<settings::Circle> NormalMissile::getBounds()
+settings::Circle NormalMissile::getBounds()
 {
-    if(state != State::EXLPODE){return std::vector<settings::Circle>();}
-    return std::vector<settings::Circle>
-    {
-        settings::Circle(explodeCircle.getRadius(),explodeCircle.getPosition())
-    };
+    if(state != State::EXLPODE){return settings::Circle();}
+    return settings::Circle(blastRadius,this->getTargetPositon());
 }
 NormalMissile::~NormalMissile()
 {
     
 }
 
+BigMissile::BigMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
+:Missile(inPosition,inTargetPosition),
+line(sf::Lines,2),
+aliveCircle(settings::missileAliveCircleRadius),
+explodeCircle()
+{
+    
+    blastRadius = 100;
+    explodeCircle.setRadius(blastRadius);
+    line[0].position = inPosition;
+    line[0].color = sf::Color::White;
+    line[1].position = getPositon();
+    line[1].color = sf::Color::Green;
+    aliveCircle.setFillColor(sf::Color::Yellow);
+    explodeCircle.setFillColor(sf::Color::White);
+    explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
+}
+void BigMissile::explode()
+{
+    if(state != State::EXLPODE){return;}
+    explodeDuration--;
+}
+void BigMissile::draw(sf::RenderWindow &window)
+{
+    if(state == State::ALIVE)
+    {
+        line[1].position = getPositon();
+        aliveCircle.setPosition(getPositon() - sf::Vector2f(aliveCircle.getRadius(),aliveCircle.getRadius()));
+        window.draw(line);
+        window.draw(aliveCircle);
+    }
+    if(state == State::EXLPODE)
+    {
+
+        window.draw(explodeCircle);
+    }
+}
+settings::Circle BigMissile::getBounds()
+{
+    if(state != State::EXLPODE){return settings::Circle();}
+    return settings::Circle(blastRadius,this->getTargetPositon());
+}
+
+BigMissile::~BigMissile()
+{
+
+}
+
+NukeMissile::NukeMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
+:Missile(inPosition,inTargetPosition),
+line(sf::Lines,2),
+aliveCircle(settings::missileAliveCircleRadius),
+explodeCircle(blastRadius)
+{
+    
+    line[0].position = inPosition;
+    line[0].color = sf::Color::White;
+    line[1].position = getPositon();
+    line[1].color = sf::Color::Blue;
+    aliveCircle.setFillColor(sf::Color::Cyan);
+    explodeCircle.setFillColor(sf::Color::White);
+    explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
+}
+
+void NukeMissile::explode()
+{
+    if(state != State::EXLPODE){return;}
+    blastRadius += settings::blastRadius*6/settings::explodeDuration;
+    explodeCircle.setRadius(blastRadius);
+    explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
+    explodeDuration--;
+}
+
+void NukeMissile::draw(sf::RenderWindow &window)
+{
+    if(state == State::ALIVE)
+    {
+        line[1].position = getPositon();
+        aliveCircle.setPosition(getPositon()- sf::Vector2f(aliveCircle.getRadius(),aliveCircle.getRadius()));
+        window.draw(line);
+        window.draw(aliveCircle);
+    }
+    if(state == State::EXLPODE)
+    {
+
+        window.draw(explodeCircle);
+    }
+}
+settings::Circle NukeMissile::getBounds()
+{
+    if(state != State::EXLPODE){return settings::Circle();}
+    return settings::Circle(blastRadius,this->getTargetPositon());
+}
+NukeMissile::~NukeMissile()
+{
+    
+}
+
+LineMissile::LineMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
+:Missile(inPosition,inTargetPosition),
+line(sf::Lines,2),
+aliveCircle(settings::missileAliveCircleRadius),
+explodeCircle(blastRadius)
+{
+    
+    line[0].position = inPosition;
+    line[0].color = sf::Color::White;
+    line[1].position = getPositon();
+    line[1].color = sf::Color::Magenta;
+    aliveCircle.setFillColor(sf::Color::Red);
+    explodeCircle.setFillColor(sf::Color::White);
+    explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
+}
+
+void LineMissile::explode()
+{
+    if(state != State::EXLPODE){return;}
+    blastRadius -= settings::blastRadius/settings::explodeDuration;
+    explodeCircle.setRadius(blastRadius);
+    sf::Vector2f newCirclePos = explodeCircle.getPosition();
+    newCirclePos = newCirclePos +  settings::scalarProduct(this->getDirection(),speed);
+    explodeCircle.setPosition(newCirclePos);
+    explodeDuration--;
+}
+
+void LineMissile::draw(sf::RenderWindow &window)
+{
+    if(state == State::ALIVE)
+    {
+        line[1].position = getPositon();
+        aliveCircle.setPosition(getPositon()- sf::Vector2f(aliveCircle.getRadius(),aliveCircle.getRadius()));
+        window.draw(line);
+        window.draw(aliveCircle);
+    }
+    if(state == State::EXLPODE)
+    {
+
+        window.draw(explodeCircle);
+    }
+}
+settings::Circle LineMissile::getBounds()
+{
+    if(state != State::EXLPODE){return settings::Circle();}
+    return settings::Circle(blastRadius,explodeCircle.getPosition() + sf::Vector2f(blastRadius,blastRadius));
+}
+LineMissile::~LineMissile()
+{
+    
+}

@@ -1,12 +1,11 @@
 #include<SFML/Graphics.hpp>
-#include<cmath>
 #include"GameUtils.hpp"
 class Missile
 {
     private:
         sf::Vector2f position;
-        sf::Vector2f targetPositon;
         sf::Vector2f direction;
+        sf::Vector2f targetPositon;
     public:
         enum class State
         {
@@ -21,8 +20,9 @@ class Missile
         virtual void draw(sf::RenderWindow &window);
         const sf::Vector2f& getPositon();
         const sf::Vector2f& getTargetPositon();
-        virtual std::vector<settings::Circle> getBounds();
+        virtual settings::Circle getBounds();
         State getState();
+        const sf::Vector2f& getDirection();
         ~Missile();
     protected: 
         double speed;
@@ -42,6 +42,48 @@ class NormalMissile : public Missile
         NormalMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
         void draw(sf::RenderWindow &window) override;
         void explode() override;
-        std::vector<settings::Circle> getBounds() override;
+        settings::Circle getBounds() override;
         ~NormalMissile();
+};
+
+class BigMissile : public Missile
+{
+    private:
+        sf::VertexArray line;
+        sf::CircleShape aliveCircle;
+        sf::CircleShape explodeCircle;
+    public:
+        BigMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
+        void draw(sf::RenderWindow &window) override;
+        void explode() override;
+        settings::Circle getBounds() override;
+        ~BigMissile();
+};
+
+class NukeMissile : public Missile
+{
+    private:
+        sf::VertexArray line;
+        sf::CircleShape aliveCircle;
+        sf::CircleShape explodeCircle;
+    public:
+        NukeMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
+        void draw(sf::RenderWindow &window) override;
+        void explode() override;
+        settings::Circle getBounds() override;
+        ~NukeMissile();
+};
+
+class LineMissile : public Missile
+{
+    private:
+        sf::VertexArray line;
+        sf::CircleShape aliveCircle;
+        sf::CircleShape explodeCircle;
+    public:
+        LineMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
+        void draw(sf::RenderWindow &window) override;
+        void explode() override;
+        settings::Circle getBounds() override;
+        ~LineMissile();
 };
