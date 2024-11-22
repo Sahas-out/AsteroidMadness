@@ -13,6 +13,8 @@ namespace settings
     const std::string rapidShooterImage = resource_path + "purpleshooter.png";
     const std::string normalShooterImage = resource_path + "blueshooter.png";
     const std::string spreadShooterImage = resource_path + "silvershooter.png";
+    const std::string lockImage = resource_path + "lock.png";
+    const std::string invalidSignImage = resource_path + "invalid.png";
     const double missileSpeed = 1;
     const double blastRadius = 30;
     const double bigBlastRadius = 100;
