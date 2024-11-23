@@ -18,7 +18,7 @@ void Missile::move()
     // position.y += direction.y*speed;
     position = position + settings::scalarProduct(direction,speed);
 }
-void Missile::checkState()
+void Missile::updateState()
 {
     if(state == State::ALIVE && settings::dotProduct(targetPositon - position,direction) <= 0)
     {

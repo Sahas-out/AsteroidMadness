@@ -3,74 +3,36 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-
-using namespace sf;
+#include "Missile.hpp"
 using namespace std;
 
-class Missile {
-    CircleShape c;
-    Vector2f target;
-    Vector2f speed;
 
-public:
-    Missile(Vector2f v, CircleShape c) {
-        this->c = c;
-        this->target = v;
-    }
-
-    void setspeed(Vector2f direction, float length) {
-        this->speed = (direction / length) * 0.5f;
-    }
-
-    Vector2f gettarget() {
-        return target;
-    }
-
-    bool targetreached() {
-        Vector2f currentpos = this->c.getPosition();
-        return abs(currentpos.x - target.x) < 1.0f && abs(currentpos.y - target.y) < 1.0f;
-    }
-
-    void move() {
-        this->c.move(speed);
-    }
-
-    CircleShape& getShape() {
-        return c;
-    }
-};
 
 
 class MissileManager {
-    vector<Missile*> v;
+    vector<Missile*> missiles;
 
 public:
     ~MissileManager() {
-        for (Missile* m : v) {
+        for (Missile* m : missiles) {
             delete m;
         }
-        v.clear();
+        missiles.clear();
     }
     // add missile should be  calling the constructor and 
-    void addMissile(Missile newMissile) {
-        // CircleShape circle(3);
-        // circle.setPosition(Vector2f(500, 900));
-        // circle.setPointCount(3);
-        // circle.setFillColor(Color::Red);
-
-        // return circle;
-        v.push_back(newMissile);
+    void addMissile(Missile* newMissile) {
+        missiles.push_back(newMissile);
     }
 
     void move(RenderWindow& window) {
-        for (Missile* i : v) {
-            i->move();
-            window.draw(i->getShape());
+        for (Missile* missile : missiles) {
+            missile->move();
+            // window.draw(missile->getShape());
         }
 
-        for (int i = 0; i < v.size(); i++) {
-            if (v[i]->targetreached()) {
-                this->handleTargetReached(window, v[i]->gettarget());
+        for (int i = 0; i < missiles.size(); i++) {
+            if (missiles[i]->targetreached()) {
+                this->handleTargetReached(window, missiles[i]->gettarget());
                 this->removeMissile(i);
                 i--; 
             }
@@ -78,8 +40,8 @@ public:
     }
 
     void removeMissile(int i) {
-        delete this->v[i];
-        this->v.erase(this->v.begin() + i);
+        delete this->missiles[i];
+        this->missiles.erase(this->missiles.begin() + i);
     }
 
     void handleTargetReached(RenderWindow& window, Vector2f targetpos) {
@@ -111,7 +73,7 @@ public:
                 Vector2f direction = targetpos - initialpos;
                 float length = sqrt(direction.x * direction.x + direction.y * direction.y);
                 m->setspeed(direction, length);
-                this->v.push_back(m);
+                this->missiles.push_back(m);
             }
         }
     }
@@ -139,3 +101,80 @@ int main() {
 
     return 0;
 }
+
+
+class MissileManager {
+    vector<Missile*> missiles;
+
+public:
+
+    ~MissileManager() {
+        for (Missile* m : missiles) {
+            delete m;
+        }
+        missiles.clear();
+    }
+
+    bool addMissile(Missile * m) {
+        this->missiles.push_back(m);
+        return true;
+    }
+
+    void move(RenderWindow& window) {
+        for (Missile* i : missiles) {
+            i->move();
+            window.draw(i->getShape());
+        }
+
+        for (int i = 0; i < missiles.size(); i++) {
+            if (missiles[i]->targetreached()) {
+                this->handleTargetReached(window, missiles[i]->gettarget());
+                this->removeMissile(i);
+                i--; 
+            }
+        }
+    }
+
+    void removeMissile(int i) {
+        delete this->missiles[i];
+        this->missiles.erase(this->v.begin() + i);
+    }
+
+    void handleTargetReached(RenderWindow& window, Vector2f targetpos) {
+        CircleShape c2(2);
+
+        for (float d = 2.0f; d < 50.0; d += 5.0f) {
+            c2.setRadius(d);
+            c2.setPosition(targetpos - Vector2f(d, d));
+            c2.setPointCount(100);
+            c2.setFillColor(Color::White);
+
+            
+
+            window.draw(c2);
+            window.display();
+        }
+    }
+
+    void Map(RenderWindow& window) {
+        
+    }
+
+    void drawMissiles(RenderWindow& window) {
+
+        while (window.isOpen()) {
+            window.clear(); // Clear the window
+
+            this->Map(window, Vector2f(500, 900)); // missiles silo at (500, 900)
+            this->move(window);
+            window.display(); // Display the frame
+        }
+    }
+};
+
+
+// addMissiles(list(Missile*))  addds all the missile passed in the list 
+// void executeMissileBehaviour calls move if missile.getState() == alive calls explode if missile.getState() == explode
+    // removes missile if the state == dead
+//  getAllBounds(vector<Circle> Bounds) // adds the bounds of missile if it is in explode state by using missile.getBounds()
+// draw(Missile) // iterates and calls the draw fnc

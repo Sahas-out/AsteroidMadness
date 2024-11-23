@@ -21,6 +21,7 @@ int main()
     RapidShooter u = RapidShooter(settings::coordinates[4],settings::missileType::normalMissile);
 
    // NormalMissile normalMissile = NormalMissile(sf::Vector2f(100,100),sf::Vector2f(450,450));
+
     // NormalShooter n = NormalShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
     // SpreadShooter s = SpreadShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
     // RapidShooter r = RapidShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
@@ -42,6 +43,7 @@ int main()
         r.draw(window);
         t.draw(window);
         u.draw(window);
+
         normalMissile.checkState();
         if(Missile::State::ALIVE == normalMissile.getState())
         {
