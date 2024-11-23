@@ -1,13 +1,16 @@
 #include"ShooterManager.hpp"
-ShooterManager::ShooterManager(){
+ShooterManager::ShooterManager(sf::RenderWindow & inWindow):window(inWindow){
+
     this->unlockNext();
-    NormalShooter* crap = new NormalShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
-    RapidShooter * alright= new RapidShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
-    SpreadShooter * awesome= new SpreadShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
-    SpreadShooter * goat= new SpreadShooter(sf::Vector2f(100,300),settings::missileType::bigMissile);
-    this->shooterList.insert(shooterList.end(),{crap,alright,awesome,goat});
+    NormalShooter* crap = new NormalShooter(settings::coordinates[0],settings::missileType::normalMissile);
+    RapidShooter * alright= new RapidShooter(settings::coordinates[1],settings::missileType::normalMissile);
+    SpreadShooter * awesome= new SpreadShooter(settings::coordinates[2],settings::missileType::normalMissile);
+    SpreadShooter * serviice= new SpreadShooter(settings::coordinates[3],settings::missileType::bigMissile);
+    SpreadShooter * goat= new SpreadShooter(settings::coordinates[4],settings::missileType::bigMissile);
+
+    this->shooterList.insert(shooterList.end(),{crap,alright,awesome,serviice,goat});
 }
-    void ShooterManager::drawShooter(sf::RenderWindow & window){
+    void ShooterManager::render(sf::RenderWindow & window){
         for(auto  shooter : shooterList) shooter->draw(window);
     }
     std::vector<Missile*>* ShooterManager::shoot(sf::Vector2f target){
@@ -19,3 +22,4 @@ ShooterManager::ShooterManager(){
     void ShooterManager:: unlockNext(){
         shooterList[++unlockCounter]->unlock();
     }
+    

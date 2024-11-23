@@ -1,3 +1,4 @@
+#pragma once
 #include<SFML/System.hpp>
 #include<iostream>
 #include<string>
@@ -34,8 +35,17 @@ namespace settings
             Circle(float radius,sf::Vector2f position);
             Circle();
     };
-    const int windowWidth = 900;
-    const int windowHeight = 1000;
+    const int windowWidth = 1920;
+    const int windowHeight = 1080;
     const int fps = 60; 
     const std::string asteroid_textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "Strong_asteroid.png"}; 
+
+    //const sf::Vector2f wrtWindow=window.getView().getSize();
+    const std::vector<sf::Vector2f>coordinates={
+        sf::Vector2f(windowWidth * 0.050f, windowHeight * 0.9f),
+        sf::Vector2f(windowWidth * 0.245f, windowHeight * 0.9f),
+        sf::Vector2f(windowWidth * 0.465f, windowHeight * 0.9f),
+        sf::Vector2f(windowWidth * 0.675f, windowHeight * 0.9f),
+        sf::Vector2f(windowWidth * 0.875f, windowHeight * 0.9f)
+        };
 };
