@@ -48,6 +48,7 @@ void Shooter::unlock()
         state = State::ACTIVE;
         onStart = true;
     }
+    
 }
 void Shooter::checkState()
 {
