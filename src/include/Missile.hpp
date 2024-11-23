@@ -15,7 +15,7 @@ class Missile
         };
         Missile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
         void move();
-        void checkState();
+        void updateState();
         virtual void explode();
         virtual void draw(sf::RenderWindow &window);
         const sf::Vector2f& getPositon();
