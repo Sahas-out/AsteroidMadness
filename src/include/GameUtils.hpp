@@ -37,4 +37,5 @@ namespace settings
     const int windowWidth = 900;
     const int windowHeight = 1000;
     const int fps = 60;
+    std::string textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "Strong_asteroid.png"}; 
 };
