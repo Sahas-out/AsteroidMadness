@@ -2,7 +2,7 @@
 #include"Shooter.hpp"
 // how to implement active inactive locked state behaviours
 
-Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
+Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
 :cooldownPeriod(inCooldownPeriod),position(inPosition),attachedMissile(inMissile)
 {
     cooldownEnabled = true;
@@ -13,7 +13,7 @@ Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Tim
     lock.setTexture(lockTexture);
     invalidSign.setTexture(invalidSignTexture);
 }
-std::vector<Missile*>* Shooter::shoot()
+std::vector<Missile*>* Shooter::shoot(sf::Vector2f targetPosition)
 {
     checkState();
     if(onStart && state == State::ACTIVE)
@@ -38,7 +38,7 @@ void Shooter::toggleCooldown(bool active)
 {
     cooldownEnabled = active;
 }
-void Shooter::setCooldownPeriod(sf::Time t)
+void Shooter::setCooldownPeriod(int t)
 {
     cooldownPeriod = t;
 }
@@ -57,7 +57,7 @@ void Shooter::checkState()
     {
         state = State::ACTIVE;
     }
-    else if(cooldownEnabled && fireInterval.getElapsedTime() < cooldownPeriod)
+    else if(cooldownEnabled && fireInterval.getElapsedTime().asSeconds()*settings::fps < cooldownPeriod)
     {
         state = State::INACTIVE;
     }
@@ -66,22 +66,40 @@ void Shooter::checkState()
         state = State::ACTIVE;
     }
 }
+Missile* Shooter::addMissile(sf::Vector2f targetPosition)
+{
+    if(attachedMissile == settings::missileType::normalMissile)
+    {
+        return new NormalMissile(position,targetPosition);
+    }
+    else if (attachedMissile == settings::missileType::bigMissile)
+    {
+        return new BigMissile(position,targetPosition);
+    }
+    else if (attachedMissile == settings::missileType::nukeMissile)
+    {
+        return new NukeMissile(position,targetPosition);
+    }
+    else
+    {
+        return new LineMissile(position,targetPosition);
+    }
+}
 
 
-
-NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
+NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
     graphicTexture.loadFromFile(settings::normalShooterImage);
     graphics.setTexture(graphicTexture);
     type = settings::shooterType::normalShooter;
 }
-std::vector<Missile*>* NormalShooter::shoot() //override
+std::vector<Missile*>* NormalShooter::shoot(sf::Vector2f targetPosition) //override
 {
-    Shooter::shoot();
+    Shooter::shoot(targetPosition);
     if(state != State::ACTIVE){return nullptr;}
     std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
-    // add missiles to it
+    shootingMissiles->push_back(addMissile(targetPosition));
     return shootingMissiles;
 }
 void NormalShooter::draw(sf::RenderWindow & window)
@@ -127,20 +145,29 @@ void NormalShooter::makeAbstract(){}
 
 
 
-SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
+SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
     type = settings::shooterType::spreadShooter;
     graphicTexture.loadFromFile(settings::spreadShooterImage);
     graphics.setTexture(graphicTexture);
-
+    missileCount = 5;
+    spread = 20;
 }
-std::vector<Missile*>* SpreadShooter::shoot() //override
+std::vector<Missile*>* SpreadShooter::shoot(sf::Vector2f targetPosition) //override
 {
-    Shooter::shoot();
+    Shooter::shoot(targetPosition);
     if(state != State::ACTIVE){return nullptr;}
     std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
-    // add missiles to it
+    for(int i =0; i<(missileCount+1)/2; i++)
+    {   
+        if(targetPosition.x + spread > settings::windowWidth || targetPosition.x - spread < 0)
+        {
+            break;
+        }
+        shootingMissiles->push_back(addMissile(sf::Vector2f(targetPosition.x + spread,targetPosition.y)));
+        shootingMissiles->push_back(addMissile(sf::Vector2f(targetPosition.x - spread,targetPosition.y)));
+    }
     return shootingMissiles;
 }
 void SpreadShooter::draw(sf::RenderWindow & window)
@@ -181,20 +208,25 @@ void SpreadShooter::makeAbstract(){}
 
 
 
-RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,sf::Time inCooldownPeriod)
+RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
     type = settings::shooterType::rapidShooter;
     graphicTexture.loadFromFile(settings::rapidShooterImage);
     graphics.setTexture(graphicTexture);
+    missileCount = 3;
 }
 
-std::vector<Missile*>* RapidShooter::shoot() //override
+std::vector<Missile*>* RapidShooter::shoot(sf::Vector2f targetPosition) //override
 {
-    Shooter::shoot();
+    Shooter::shoot(targetPosition);
     if(state != State::ACTIVE){return nullptr;}
     std::vector<Missile*>* shootingMissiles = new std::vector<Missile*>();
     // add missiles to it
+    for(int i=0; i<missileCount;i++)
+    {
+        shootingMissiles->push_back(addMissile(targetPosition));
+    }
     return shootingMissiles;
 }
 void RapidShooter::draw(sf::RenderWindow &window)
