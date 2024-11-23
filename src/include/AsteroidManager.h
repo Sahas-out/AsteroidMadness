@@ -21,7 +21,6 @@ public:
 
     //Functions
     void setWindow(sf::RenderWindow*);
-    void run();
     void updateAsteroids();
     void update();
     void render();

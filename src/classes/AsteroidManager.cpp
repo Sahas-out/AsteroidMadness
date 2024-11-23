@@ -1,6 +1,5 @@
 #include "AsteroidManager.h"
 
-
 void AsteroidManager::initAstroid()
 {
     this->spawnTimerMax = 50.0f;
@@ -25,21 +24,13 @@ void AsteroidManager::setWindow(sf::RenderWindow* window)
 }
 
 // Functions
-void AsteroidManager::run()
-{
-    while (this->window->isOpen())
-    {
-        this->update();
-        this->render();
-    }
-    
-}
 
 void AsteroidManager::updateAsteroids()
 {
+    //generating a random asteroid at spawm time
     this->spawnTimer += 0.5f;
     if(this->spawnTimer >=spawnTimerMax){
-        this->asteroids.push_back(new Asteroid(rand() % (this->window->getSize().x - 100),-100.f));
+        this->asteroids.push_back(new Asteroid(rand() % (this->window->getSize().x - 100),-100.f, rand() % 3));
         this->spawnTimer =0.0f;
     }
     for(int index = 0;index < this->asteroids.size(); index++){
@@ -61,7 +52,7 @@ void AsteroidManager::update()
 
 void AsteroidManager::render()
 {
-    
+
     this->window->clear();
     // Draw stuff
 
