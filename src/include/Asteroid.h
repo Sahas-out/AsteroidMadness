@@ -2,14 +2,15 @@
 
 #include <iostream>
 #include <string>
+#include <algorithm>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+
 
 class Asteroid{
 private:
     sf::Sprite sprite;
     sf::Texture texture;
-    std::string textureFiles [3] = {"resources/normal_asteroid.png","resources/quick_asteroid.png","resources/Strong_asteroid.png"};
     std::string type; 
     float speed; // current speed of the asteroid
     int hp;  // current hp of the asteroid

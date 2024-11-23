@@ -8,4 +8,5 @@ namespace settings
     const std::string resource_path = "./resources/";
     const std::string normalShooterTexture = resource_path + "stainless-steel.jpg";
     const std::string normalShooterImage = resource_path + "blueshooter.png";
+    std::string textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "Strong_asteroid.png"}; 
 };

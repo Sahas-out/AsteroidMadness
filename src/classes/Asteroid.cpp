@@ -1,22 +1,23 @@
 #include "Asteroid.h"
+#include "GameUtils.hpp"
 
 void Asteroid::initTexture()
 {
     //load texture form file    
     if(this->type == "Normal"){
-        if(!this->texture.loadFromFile(this->textureFiles[0]))
+        if(!this->texture.loadFromFile(settings::textureFiles[0]))
         {
             std::cout << "Error: couldn't load Astroid texture.";
         }
     }
     else if(this->type == "Quick"){
-        if(!this->texture.loadFromFile(this->textureFiles[1]))
+        if(!this->texture.loadFromFile(settings::textureFiles[0]))
         {
             std::cout << "Error: couldn't load Astroid texture.";
         }
     }
     else if(this->type == "Strong"){
-        if(!this->texture.loadFromFile(this->textureFiles[2]))
+        if(!this->texture.loadFromFile(settings::textureFiles[0]))
         {
             std::cout << "Error: couldn't load Astroid texture.";
         }
@@ -86,3 +87,4 @@ void Asteroid::render(sf::RenderTarget &target)
 {
     target.draw(this->sprite);
 }
+))
