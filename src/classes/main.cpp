@@ -13,10 +13,9 @@ int main()
     NormalShooter n = NormalShooter(coordinates[0],settings::missileType::normalMissile);
     SpreadShooter s = SpreadShooter(coordinates[1],settings::missileType::normalMissile);
     RapidShooter r = RapidShooter(coordinates[2],settings::missileType::normalMissile);
-    NormalMissile normalMissile = NormalMissile(sf::Vector2f(100,100),sf::Vector2f(450,450));
-    NormalShooter n = NormalShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
-    SpreadShooter s = SpreadShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
-    RapidShooter r = RapidShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
+    // NormalShooter n = NormalShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
+    // SpreadShooter s = SpreadShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
+    // RapidShooter r = RapidShooter(sf::Vector2f(100,300),settings::missileType::normalMissile);
     // NormalMissile normalMissile = NormalMissile(sf::Vector2f(100,100),sf::Vector2f(450,450));
     // BigMissile normalMissile = BigMissile(sf::Vector2f(450,450),sf::Vector2f(100,100));
     // NukeMissile normalMissile = NukeMissile(sf::Vector2f(350,350),sf::Vector2f(100,100));
@@ -30,9 +29,9 @@ int main()
             if(event.type == sf::Event::Closed){ window.close();}
         }
         window.clear();
-        // n.draw(window);
-        // s.draw(window);
-        // r.draw(window);
+        n.draw(window);
+        s.draw(window);
+        r.draw(window);
         normalMissile.checkState();
         if(Missile::State::ALIVE == normalMissile.getState())
         {
