@@ -252,3 +252,11 @@
 # SplitAsteroid (derived from base class: Asteroid)
     Methods 
         -overrides destruction (creates two new asteroids) -->
+
+
+# GameLogic 
+    constructor
+        intialises shootermanager asteroid manager missle manager
+        intialises the file pointer
+    frame logic 
+        implements all the logic between 2 frames 

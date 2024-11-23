@@ -106,7 +106,6 @@ std::vector<Missile*>* NormalShooter::shoot(sf::Vector2f targetPosition) //overr
 void NormalShooter::draw(sf::RenderWindow & window)
 {
     Shooter::draw(window);
-   
     //graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
@@ -121,8 +120,8 @@ void NormalShooter::draw(sf::RenderWindow & window)
 
         sf::FloatRect bounds = graphics.getGlobalBounds();
         invalidSign.setPosition(
-              bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
-             bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
+            bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
+            bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
         );
         float w = bounds.width * 0.2f; // Adjust scaling as needed
         float h = w / (invalidSignTexture.getSize().x / (float)invalidSignTexture.getSize().y);
@@ -186,7 +185,7 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
     graphicTexture.loadFromFile(settings::spreadShooterImage);
     graphics.setTexture(graphicTexture);
 
-     graphics.setPosition(inPosition);
+    graphics.setPosition(inPosition);
 
     missileCount = 5;
     spread = 20;
@@ -211,7 +210,6 @@ std::vector<Missile*>* SpreadShooter::shoot(sf::Vector2f targetPosition) //overr
 void SpreadShooter::draw(sf::RenderWindow & window)
 {
     Shooter::draw(window);
-   
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
@@ -224,7 +222,7 @@ void SpreadShooter::draw(sf::RenderWindow & window)
         graphics.setColor(color);
         sf::FloatRect bounds = graphics.getGlobalBounds();
         invalidSign.setPosition(
-              bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
+        bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
         bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
         );
         float w = bounds.width * 0.2f; // Adjust scaling as needed
@@ -308,7 +306,7 @@ void RapidShooter::draw(sf::RenderWindow &window)
         graphics.setColor(color);
         sf::FloatRect bounds = graphics.getGlobalBounds();
         invalidSign.setPosition(
-              bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
+        bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
         bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
         );
         float w = bounds.width * 0.2f; // Adjust scaling as needed
