@@ -1,5 +1,4 @@
-
-#include"Shooter.hpp"
+#include "Shooter.hpp"
 // how to implement active inactive locked state behaviours
 
 Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
@@ -49,6 +48,7 @@ void Shooter::unlock()
         state = State::ACTIVE;
         onStart = true;
     }
+    
 }
 void Shooter::checkState()
 {
@@ -89,10 +89,11 @@ Missile* Shooter::addMissile(sf::Vector2f targetPosition)
 
 NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
-{
+{   
     graphicTexture.loadFromFile(settings::normalShooterImage);
     graphics.setTexture(graphicTexture);
     type = settings::shooterType::normalShooter;
+    graphics.setPosition(inPosition);
 }
 std::vector<Missile*>* NormalShooter::shoot(sf::Vector2f targetPosition) //override
 {
@@ -105,7 +106,8 @@ std::vector<Missile*>* NormalShooter::shoot(sf::Vector2f targetPosition) //overr
 void NormalShooter::draw(sf::RenderWindow & window)
 {
     Shooter::draw(window);
-    graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+   
+    //graphics.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
@@ -116,23 +118,55 @@ void NormalShooter::draw(sf::RenderWindow & window)
         sf::Color color = graphics.getColor();
         color.a = 64;
         graphics.setColor(color);
-        invalidSign.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+
+        sf::FloatRect bounds = graphics.getGlobalBounds();
+        invalidSign.setPosition(
+              bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
+             bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
+        );
+        float w = bounds.width * 0.2f; // Adjust scaling as needed
+        float h = w / (invalidSignTexture.getSize().x / (float)invalidSignTexture.getSize().y);
+        invalidSign.setScale(w / invalidSignTexture.getSize().x, h / invalidSignTexture.getSize().y);
+       // invalidSign.setPosition(window.getView().getSize().x * 0.05f, window.getView().getSize().y * 0.95f);
         window.draw(graphics);
         window.draw(invalidSign);
     }
+    // else if (state == State::LOCKED)
+    // {
+    //     sf::Color color = graphics.getColor();
+    //     color.a = 64;
+    //     graphics.setColor(color);
+    //     lock.setPosition(window.getView().getSize().x * 0.05f, window.getView().getSize().y * 0.95f);
+    //     float w = 50;
+    //     float h = w / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
+
+    //     lock.setScale(w / graphicTexture.getSize().x, h / graphicTexture.getSize().y);
+
+    //     window.draw(graphics);
+    //     window.draw(lock);
+    // }
     else if (state == State::LOCKED)
     {
-        sf::Color color = graphics.getColor();
-        color.a = 64;
-        graphics.setColor(color);
-        lock.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
-        float w = 10;
-        float h = w / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
+    sf::Color color = graphics.getColor();
+    color.a = 64;
+    graphics.setColor(color);
 
-        lock.setScale(w / graphicTexture.getSize().x, h / graphicTexture.getSize().y);
+    // Get the bounds of the graphics sprite
+    sf::FloatRect bounds = graphics.getGlobalBounds();
 
-        window.draw(graphics);
-        window.draw(lock);
+    // Position the lock at the center of the graphics sprite
+    lock.setPosition(
+        bounds.left + bounds.width / 2 - lock.getGlobalBounds().width / 2,
+        bounds.top + bounds.height / 2 - lock.getGlobalBounds().height / 2 + 10
+    );
+
+    // Scale the lock sprite if needed
+    float w = bounds.width * 0.2f; // Adjust scaling as needed
+    float h = w / (lockTexture.getSize().x / (float)lockTexture.getSize().y);
+    lock.setScale(w / lockTexture.getSize().x, h / lockTexture.getSize().y);
+
+    window.draw(graphics);
+    window.draw(lock);
     }
     else
     {
@@ -151,8 +185,12 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
     type = settings::shooterType::spreadShooter;
     graphicTexture.loadFromFile(settings::spreadShooterImage);
     graphics.setTexture(graphicTexture);
+
+     graphics.setPosition(inPosition);
+
     missileCount = 5;
     spread = 20;
+
 }
 std::vector<Missile*>* SpreadShooter::shoot(sf::Vector2f targetPosition) //override
 {
@@ -173,7 +211,7 @@ std::vector<Missile*>* SpreadShooter::shoot(sf::Vector2f targetPosition) //overr
 void SpreadShooter::draw(sf::RenderWindow & window)
 {
     Shooter::draw(window);
-    graphics.setPosition(window.getView().getSize().x * 0.44f, window.getView().getSize().y * 0.9f);
+   
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
@@ -184,7 +222,14 @@ void SpreadShooter::draw(sf::RenderWindow & window)
         sf::Color color = graphics.getColor();
         color.a = 64;
         graphics.setColor(color);
-        invalidSign.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        sf::FloatRect bounds = graphics.getGlobalBounds();
+        invalidSign.setPosition(
+              bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
+        bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
+        );
+        float w = bounds.width * 0.2f; // Adjust scaling as needed
+        float h = w / (invalidSignTexture.getSize().x / (float)invalidSignTexture.getSize().y);
+        invalidSign.setScale(w / invalidSignTexture.getSize().x, h / invalidSignTexture.getSize().y);
         window.draw(graphics);
         window.draw(invalidSign);
     }
@@ -193,9 +238,22 @@ void SpreadShooter::draw(sf::RenderWindow & window)
         sf::Color color = graphics.getColor();
         color.a = 64;
         graphics.setColor(color);
-        lock.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
-        window.draw(graphics);
-        window.draw(lock);
+        // Get the bounds of the graphics sprite
+        sf::FloatRect bounds = graphics.getGlobalBounds();
+
+    // Position the lock at the center of the graphics sprite
+        lock.setPosition(
+            bounds.left + bounds.width / 2 - lock.getGlobalBounds().width / 2,
+            bounds.top + bounds.height / 2 - lock.getGlobalBounds().height / 2 + 10
+        );
+
+    // Scale the lock sprite if needed
+    float w = bounds.width * 0.2f; // Adjust scaling as needed
+    float h = w / (lockTexture.getSize().x / (float)lockTexture.getSize().y);
+    lock.setScale(w / lockTexture.getSize().x, h / lockTexture.getSize().y);
+
+    window.draw(graphics);
+    window.draw(lock);
     }
     else
     {
@@ -214,7 +272,11 @@ RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissi
     type = settings::shooterType::rapidShooter;
     graphicTexture.loadFromFile(settings::rapidShooterImage);
     graphics.setTexture(graphicTexture);
+
+    graphics.setPosition(inPosition);
+
     missileCount = 3;
+
 }
 
 std::vector<Missile*>* RapidShooter::shoot(sf::Vector2f targetPosition) //override
@@ -233,7 +295,7 @@ void RapidShooter::draw(sf::RenderWindow &window)
 {
     Shooter::draw(window);
 
-    graphics.setPosition(window.getView().getSize().x * 0.875f, window.getView().getSize().y * 0.9f);
+    
     
     // Set the scale to maintain the original aspect ratio
     float width = 100; // desired width
@@ -244,7 +306,14 @@ void RapidShooter::draw(sf::RenderWindow &window)
         sf::Color color = graphics.getColor();
         color.a = 64;
         graphics.setColor(color);
-        invalidSign.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
+        sf::FloatRect bounds = graphics.getGlobalBounds();
+        invalidSign.setPosition(
+              bounds.left + bounds.width / 2 - invalidSign.getGlobalBounds().width / 2,
+        bounds.top + bounds.height / 2 - invalidSign.getGlobalBounds().height / 2 + 10
+        );
+        float w = bounds.width * 0.2f; // Adjust scaling as needed
+        float h = w / (invalidSignTexture.getSize().x / (float)invalidSignTexture.getSize().y);
+        invalidSign.setScale(w / invalidSignTexture.getSize().x, h / invalidSignTexture.getSize().y);
         window.draw(graphics);
         window.draw(invalidSign);
     }
@@ -253,9 +322,22 @@ void RapidShooter::draw(sf::RenderWindow &window)
         sf::Color color = graphics.getColor();
         color.a = 64;
         graphics.setColor(color);
-        lock.setPosition(window.getView().getSize().x * 0.0f, window.getView().getSize().y * 0.9f);
-        window.draw(graphics);
-        window.draw(lock);
+        // Get the bounds of the graphics sprite
+        sf::FloatRect bounds = graphics.getGlobalBounds();
+
+    // Position the lock at the center of the graphics sprite
+        lock.setPosition(
+            bounds.left + bounds.width / 2 - lock.getGlobalBounds().width / 2,
+            bounds.top + bounds.height / 2 - lock.getGlobalBounds().height / 2 + 10
+        );
+
+    // Scale the lock sprite if needed
+    float w = bounds.width * 0.2f; // Adjust scaling as needed
+    float h = w / (lockTexture.getSize().x / (float)lockTexture.getSize().y);
+    lock.setScale(w / lockTexture.getSize().x, h / lockTexture.getSize().y);
+
+    window.draw(graphics);
+    window.draw(lock);
     }
     else
     {
@@ -265,21 +347,3 @@ void RapidShooter::draw(sf::RenderWindow &window)
 void RapidShooter::makeAbstract(){}
 
 
-
-// sf::ConvexShape* Shooter::getShooterShape()
-// {
-//     sf::ConvexShape* semicircle = new sf::ConvexShape();
-//     semicircle->setPointCount(100); // number of points to define the semicircle
-
-//     float radius = 50.0f; // radius of the semicircle
-//     float angle =  M_PI; // 180 degrees in radians
-
-//     for (int i = 0; i < semicircle->getPointCount(); i++) {
-//         float a = -(angle * i / semicircle->getPointCount());
-//         sf::Vector2f point(radius * std::cos(a), radius * std::sin(a));
-//         semicircle->setPoint(i, point);
-//     }
-
-//     semicircle->setPosition(0, -100); // set the position
-//     return semicircle;
-// }
