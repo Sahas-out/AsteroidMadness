@@ -2,7 +2,7 @@
 
 void Game::initWindow()
 {
-    this->window = new sf::RenderWindow(sf::VideoMode(1200,720),"astroid shooter",sf::Style::Titlebar | sf::Style::Close);
+    this->window = new sf::RenderWindow(sf::VideoMode(900,1000),"astroid shooter",sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(144);
 }
 
