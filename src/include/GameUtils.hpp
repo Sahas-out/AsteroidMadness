@@ -2,13 +2,15 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<cmath>
+
 namespace settings
 {
-    const sf::Time defaultCooldown(sf::seconds(2));
-    const sf::Time spreadCooldown(sf::seconds(10));
-    const sf::Time rapidCooldown (sf::seconds(5));
+    const int defaultCooldown = 7200;
+    const int  spreadCooldown = 7200;
+    const int  rapidCooldown = 7200;
     enum shooterType {normalShooter=1,spreadShooter=2,rapidShooter=3};
-    enum missileType {normalMissile = 1,BigMissile =2};
+    enum missileType {normalMissile = 1,bigMissile =2,nukeMissile = 3,lineMissile = 4};
     const std::string resource_path = "./resources/";
     const std::string rapidShooterImage = resource_path + "purpleshooter.png";
     const std::string normalShooterImage = resource_path + "blueshooter.png";
@@ -22,11 +24,17 @@ namespace settings
     const double missileAliveCircleRadius = 3.5;
 
     const double dotProduct(sf::Vector2f a,sf::Vector2f b);
+    const void  normalise(sf::Vector2f * vector);
+    const sf::Vector2f scalarProduct(sf::Vector2f vector,float scalar);
     class Circle
     {
         public:
             float r;
             sf::Vector2f pos;
             Circle(float radius,sf::Vector2f position);
+            Circle();
     };
+    const int windowWidth = 900;
+    const int windowHeight = 1000;
+    const int fps = 60;
 };
