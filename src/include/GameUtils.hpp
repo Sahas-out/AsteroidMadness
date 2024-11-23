@@ -7,7 +7,7 @@
 
 namespace settings
 {
-    const int defaultCooldown = 7200;
+    const int defaultCooldown = 144;
     const int  spreadCooldown = 7200;
     const int  rapidCooldown = 7200;
     enum shooterType {normalShooter=1,spreadShooter=2,rapidShooter=3};
@@ -37,8 +37,8 @@ namespace settings
     };
     const int windowWidth = 1920;
     const int windowHeight = 1080;
-    const int fps = 60; 
-    const std::string asteroid_textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "Strong_asteroid.png"}; 
+    const int fps = 144; 
+    const std::string asteroid_textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "strong_asteroid.png"}; 
 
     //const sf::Vector2f wrtWindow=window.getView().getSize();
     const std::vector<sf::Vector2f>coordinates={

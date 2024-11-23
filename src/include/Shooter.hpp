@@ -1,3 +1,5 @@
+#pragma once
+
 #include<SFML/System.hpp>
 #include"Missile.hpp"
 #include<SFML/Graphics.hpp>
@@ -30,11 +32,11 @@ class Shooter
         void setCooldownPeriod(int  t);
         void checkState();
         void resetTimer();
-        virtual std::vector<Missile*>* shoot(sf::Vector2f targetPosition);
+        virtual std::vector<Missile*> shoot(sf::Vector2f targetPosition);
         virtual void draw(sf::RenderWindow& window );
         virtual void makeAbstract() = 0;
         void unlock();
-        Missile* addMissile(sf::Vector2f targetPosition);
+        Missile* addMissile(sf::Vector2f shooterSize,sf::Vector2f targetPosition);
 };
 
 class NormalShooter:public Shooter
@@ -44,9 +46,12 @@ class NormalShooter:public Shooter
         sf::Sprite graphics;
         sf::Texture graphicTexture;
         settings::shooterType type;
+        sf::Sprite fadedGraphics;
+        void setInvalidSign();
+        void setLock();
     public:
         NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,int  inCooldownPeriod = settings::defaultCooldown);
-        std::vector<Missile*>* shoot(sf::Vector2f targetPosition) override;
+        std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
 };
@@ -58,9 +63,12 @@ class SpreadShooter:public Shooter
         sf::Texture graphicTexture;
         int missileCount ;
         double spread;
+        sf::Sprite fadedGraphics;
+        void setInvalidSign();
+        void setLock();
     public:
         SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,int  inCooldownPeriod = settings::spreadCooldown);
-        std::vector<Missile*>* shoot(sf::Vector2f targetPosition) override;
+        std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
 };
@@ -71,9 +79,13 @@ class RapidShooter:public Shooter
         int missileCount;
         sf::Sprite graphics;
         sf::Texture graphicTexture;
+        sf::Sprite fadedGraphics;
+        void setInvalidSign();
+        void setLock();
+
     public:
         RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,int  inCooldownPeriod = settings::rapidCooldown);
-        std::vector<Missile*> *shoot(sf::Vector2f targetPosition) override;
+        std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
 };

@@ -53,13 +53,9 @@ void AsteroidManager::update()
 void AsteroidManager::render()
 {
 
-    this->window->clear();
-    // Draw stuff
 
     for(auto *asteroid : asteroids){
         asteroid->render(*this->window);
     }
-
-    this->window->display();
 
 }
