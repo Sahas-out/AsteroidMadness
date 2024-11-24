@@ -35,7 +35,7 @@ Game::~Game()
 
 void Game::run()
 {
-    shooterManager->selectShooter(0);
+    shooterManager->selectShooter(4);
 
     bool isMousePressed = false ;        // check is the mouse is pressed in this frame
     sf::Vector2f mousePosition; // store the values of the mouse position if the mouse is pressed

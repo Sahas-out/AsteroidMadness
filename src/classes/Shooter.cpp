@@ -108,7 +108,7 @@ NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMis
     type = settings::shooterType::normalShooter;
     graphics.setPosition(inPosition);
     
-    float width = 100; 
+    float width = settings::shooterWidth; 
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
 
@@ -194,7 +194,7 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
     graphics.setTexture(graphicTexture);
     graphics.setPosition(inPosition);
 
-    float width = 100; // desired width
+    float width = settings::shooterWidth; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
 
@@ -294,7 +294,7 @@ RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissi
     graphics.setTexture(graphicTexture);
     graphics.setPosition(inPosition);
     
-    float width = 100; // desired width
+    float width = settings::shooterWidth; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
 
