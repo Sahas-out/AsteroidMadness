@@ -61,8 +61,10 @@ void Game::initBackground()
     backgroundSprite.setPosition(xPos, yPos);
 }
 void Game::run()
+
 {   int index=0;
     shooterManager->selectShooter(index);
+
 
     bool isMousePressed = false ;        // check is the mouse is pressed in this frame
     sf::Vector2f mousePosition; // store the values of the mouse position if the mouse is pressed

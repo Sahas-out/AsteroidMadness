@@ -3,10 +3,10 @@ ShooterManager::ShooterManager(sf::RenderWindow * inWindow):window(inWindow){
     unlockCounter = -1;
     ShooterHeight = settings::windowHeight * 0.9f;
     float margin = 50;
-    float spaceBetween = (settings::windowWidth - (2*margin)) / settings::totalShootersCount;
+    float spaceBetween = (settings::windowWidth - (2*margin) - settings::shooterWidth) / (settings::totalShootersCount -1 );
     for(int i =0; i<settings::totalShootersCount;i++)
     {
-        coordinates.push_back(sf::Vector2f(((i*spaceBetween))+margin,ShooterHeight));
+        coordinates.push_back(sf::Vector2f((i*spaceBetween)+margin,ShooterHeight));
     }
     
     NormalShooter* crap = new NormalShooter(coordinates[3],settings::missileType::normalMissile,settings::shooter1);
@@ -17,6 +17,10 @@ ShooterManager::ShooterManager(sf::RenderWindow * inWindow):window(inWindow){
     SpreadShooter * goat = new SpreadShooter(coordinates[0],settings::missileType::lineMissile,settings::shooter6);
     RapidShooter * perfect = new RapidShooter(coordinates[6],settings::nukeMissile,settings::shooter7);
     this->shooterList.insert(shooterList.end(),{crap,alright,ohh,woahhh,awesome,goat,perfect});
+    this->unlockNext();
+    this->unlockNext();
+    this->unlockNext();
+    this->unlockNext();
     this->unlockNext();
     // this->unlockNext();
     shooterCursorTexture.loadFromFile(settings::shooterCursorImage);

@@ -34,7 +34,7 @@ namespace settings
     const std::string shooterCursorImage = resource_path + "shooterCursor.png";
     const std::string backgroundMusic = resource_path + "backgroundMusic.mp3";
     const std::string missileSound = resource_path + "missileSound.wav";
-
+    const double shooterWidth = 100;
     const double missileSpeed = 10;
 
     const double blastRadius = 30;
