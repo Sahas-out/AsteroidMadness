@@ -11,6 +11,9 @@ Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,int inC
     invalidSignTexture.loadFromFile(settings::invalidSignImage);
     lock.setTexture(lockTexture);
     invalidSign.setTexture(invalidSignTexture);
+    missileLaunchBuffer.loadFromFile(settings::missileSound);
+    missileLaunchSound.setBuffer(missileLaunchBuffer);
+    missileLaunchSound.setVolume(10);
 }
 std::vector<Missile*> Shooter::shoot(sf::Vector2f targetPosition)
 {
@@ -93,7 +96,7 @@ Missile* Shooter::addMissile(sf::Vector2f shooterSize,sf::Vector2f targetPositio
 }
 sf::Vector2f Shooter::cursorPosition()
 {
-    
+    return sf::Vector2f();
 }
 
 
@@ -149,6 +152,7 @@ std::vector<Missile*> NormalShooter::shoot(sf::Vector2f targetPosition) //overri
     if(state != State::ACTIVE){return std::vector<Missile*>();}
     std::vector<Missile*> shootingMissiles;
     shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(), targetPosition));
+    this->missileLaunchSound.play();
     return shootingMissiles;
 }
 void NormalShooter::draw(sf::RenderWindow & window)
@@ -174,7 +178,8 @@ void NormalShooter::makeAbstract(){}
 sf::Vector2f NormalShooter::cursorPosition()
 {
     sf::Vector2f cursorPos;
-    cursorPos.x = this->position.x + this->graphics.getGlobalBounds().getSize().x;
+    cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
+    cursorPos.y = this->position.y - 10;
     return cursorPos;
 }
 
@@ -210,6 +215,7 @@ std::vector<Missile*> SpreadShooter::shoot(sf::Vector2f targetPosition) //overri
     if(state != State::ACTIVE){return std::vector<Missile*>();}
     std::vector<Missile*> shootingMissiles;
     shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(),targetPosition));
+    this->missileLaunchSound.play();
     for(int i =1; i<(missileCount+1)/2; i++)
     {   
         if(targetPosition.x + spread > settings::windowWidth || targetPosition.x - spread < 0)
@@ -217,7 +223,9 @@ std::vector<Missile*> SpreadShooter::shoot(sf::Vector2f targetPosition) //overri
             break;
         }
         shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(), sf::Vector2f(targetPosition.x + (i*spread),targetPosition.y)));
+        this->missileLaunchSound.play();
         shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(),sf::Vector2f(targetPosition.x - (i*spread),targetPosition.y)));
+        this->missileLaunchSound.play();
     }
     return shootingMissiles;
 }
@@ -271,7 +279,8 @@ void SpreadShooter::makeAbstract(){}
 sf::Vector2f SpreadShooter::cursorPosition()
 {
     sf::Vector2f cursorPos;
-    cursorPos.x = this->position.x + this->graphics.getGlobalBounds().getSize().x;
+    cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
+    cursorPos.y = this->position.y - 10;
     return cursorPos;
 }
 
@@ -331,6 +340,8 @@ std::vector<Missile*> RapidShooter::shoot(sf::Vector2f targetPosition) //overrid
     for(int i=0; i<missileCount;i++)
     {
         shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(),targetPosition));
+        this->missileLaunchSound.play();
+
     }
     return shootingMissiles;
 }
@@ -360,6 +371,7 @@ void RapidShooter::makeAbstract(){}
 sf::Vector2f RapidShooter::cursorPosition()
 {
     sf::Vector2f cursorPos;
-    cursorPos.x = this->position.x + this->graphics.getGlobalBounds().getSize().x;
+    cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
+    cursorPos.y = this->position.y - 10;
     return cursorPos;
 }

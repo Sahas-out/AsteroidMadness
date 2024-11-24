@@ -5,6 +5,7 @@
 #include<SFML/Graphics.hpp>
 #include<cmath>
 #include<vector>
+#include<SFML/Audio.hpp>
 class Shooter
 {
     private:
@@ -20,6 +21,8 @@ class Shooter
             ACTIVE,
             INACTIVE
         };
+        sf::Sound missileLaunchSound;
+        sf::SoundBuffer missileLaunchBuffer;
         sf::Vector2f position;
         State state;
         sf::Sprite lock;
@@ -37,7 +40,7 @@ class Shooter
         virtual void makeAbstract() = 0;
         void unlock();
         Missile* addMissile(sf::Vector2f shooterSize,sf::Vector2f targetPosition);
-        sf::Vector2f cursorPosition();
+        virtual sf::Vector2f cursorPosition();
 };
 
 class NormalShooter:public Shooter
@@ -55,7 +58,7 @@ class NormalShooter:public Shooter
         std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
-        sf::Vector2f cursorPosition();
+        sf::Vector2f cursorPosition() override;
 };
 class SpreadShooter:public Shooter
 {
@@ -73,7 +76,7 @@ class SpreadShooter:public Shooter
         std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
-        sf::Vector2f cursorPosition();
+        sf::Vector2f cursorPosition() override;
 
 };
 class RapidShooter:public Shooter
@@ -92,6 +95,6 @@ class RapidShooter:public Shooter
         std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
-        sf::Vector2f cursorPosition();
+        sf::Vector2f cursorPosition() override;
 
 };

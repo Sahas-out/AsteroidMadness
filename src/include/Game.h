@@ -12,6 +12,7 @@ private:
     MissileManager* missileManager;
     sf::Cursor cursor;
     sf::Image cursorImage;
+    sf::Music backgroundMusic;
 public:
     void initWindow();
     void initAsteroidManager();

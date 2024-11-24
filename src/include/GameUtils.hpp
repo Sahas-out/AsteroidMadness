@@ -31,6 +31,8 @@ namespace settings
     const std::string shooter6 = resource_path + "shooter6.png";
     const std::string shooter7 = resource_path + "shooter7.png";
     const std::string shooterCursorImage = resource_path + "shooterCursor.png";
+    const std::string backgroundMusic = resource_path + "backgroundMusic.mp3";
+    const std::string missileSound = resource_path + "missileSound.wav";
 
     const double missileSpeed = 10;
 

@@ -19,13 +19,10 @@ ShooterManager::ShooterManager(sf::RenderWindow * inWindow):window(inWindow){
     this->shooterList.insert(shooterList.end(),{crap,alright,ohh,woahhh,awesome,goat,perfect});
     this->unlockNext();
     // this->unlockNext();
-    // this->unlockNext();
-    // this->unlockNext();
-    // this->unlockNext();
     shooterCursorTexture.loadFromFile(settings::shooterCursorImage);
     shooterCursorGraphics.setTexture(shooterCursorTexture);
 
-    float width = 50;
+    float width = 75;
     float height = width / (shooterCursorTexture.getSize().x / (float)shooterCursorTexture.getSize().y);
     shooterCursorGraphics.setScale(width / shooterCursorTexture.getSize().x, height / shooterCursorTexture.getSize().y);
 }
@@ -34,8 +31,8 @@ ShooterManager::ShooterManager(sf::RenderWindow * inWindow):window(inWindow){
         cursorPos.x -= shooterCursorGraphics.getGlobalBounds().getSize().x/2;
         cursorPos.y -= shooterCursorGraphics.getGlobalBounds().getSize().y;
         shooterCursorGraphics.setPosition(cursorPos);
+        for(auto  shooter : shooterList) {shooter->draw(*window);};
         window->draw(shooterCursorGraphics);
-        for(auto  shooter : shooterList) shooter->draw(*window);
     }
     std::vector<Missile*> ShooterManager::shoot(sf::Vector2f target){
         return shooterList[currentShooter]->shoot(target);
@@ -46,4 +43,7 @@ ShooterManager::ShooterManager(sf::RenderWindow * inWindow):window(inWindow){
     void ShooterManager:: unlockNext(){
         shooterList[++unlockCounter]->unlock();
     }
-    
+    int ShooterManager::getCurrentShooter()
+    {
+        return currentShooter;
+    }

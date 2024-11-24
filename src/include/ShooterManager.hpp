@@ -19,6 +19,7 @@ class ShooterManager{
     std::vector<Missile*> shoot(sf::Vector2f target);
     void selectShooter(int index);
     void unlockNext();
+    int getCurrentShooter();
     // void Update();
 
 };
