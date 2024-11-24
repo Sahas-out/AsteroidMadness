@@ -191,7 +191,7 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
     setLock();
     setInvalidSign();
     missileCount = 5;
-    spread = 20;
+    spread = 50;
 
 }
 std::vector<Missile*> SpreadShooter::shoot(sf::Vector2f targetPosition) //override
@@ -199,14 +199,15 @@ std::vector<Missile*> SpreadShooter::shoot(sf::Vector2f targetPosition) //overri
     Shooter::shoot(targetPosition);
     if(state != State::ACTIVE){return std::vector<Missile*>();}
     std::vector<Missile*> shootingMissiles;
-    for(int i =0; i<(missileCount+1)/2; i++)
+    shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(),targetPosition));
+    for(int i =1; i<(missileCount+1)/2; i++)
     {   
         if(targetPosition.x + spread > settings::windowWidth || targetPosition.x - spread < 0)
         {
             break;
         }
-        shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(), sf::Vector2f(targetPosition.x + spread,targetPosition.y)));
-        shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(),sf::Vector2f(targetPosition.x - spread,targetPosition.y)));
+        shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(), sf::Vector2f(targetPosition.x + (i*spread),targetPosition.y)));
+        shootingMissiles.push_back(addMissile(graphics.getGlobalBounds().getSize(),sf::Vector2f(targetPosition.x - (i*spread),targetPosition.y)));
     }
     return shootingMissiles;
 }

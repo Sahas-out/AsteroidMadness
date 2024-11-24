@@ -18,7 +18,6 @@ Game::Game()
     this->initWindow();
     this->initAsteroidManager();
     this->missileManager = new MissileManager(this->window);
-    std::cout<<"constructors done"<<std::endl;
     this->shooterManager = new ShooterManager(this->window);
 }
 
