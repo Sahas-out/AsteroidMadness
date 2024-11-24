@@ -19,6 +19,8 @@ Game::Game()
     this->initAsteroidManager();
     this->missileManager = new MissileManager(this->window);
     this->shooterManager = new ShooterManager(this->window);
+    cursorImage.loadFromFile(settings::cursorImage);
+    cursor.loadFromPixels(cursorImage.getPixelsPtr(),cursorImage.getSize(),sf::Vector2u(cursorImage.getSize().x/2,cursorImage.getSize().y/2));
 }
 
 Game::~Game()

@@ -10,7 +10,8 @@ private:
     AsteroidManager* asteroidManager;
     ShooterManager* shooterManager;
     MissileManager* missileManager;
-
+    sf::Cursor cursor;
+    sf::Image cursorImage;
 public:
     void initWindow();
     void initAsteroidManager();

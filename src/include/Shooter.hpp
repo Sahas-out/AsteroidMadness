@@ -37,6 +37,7 @@ class Shooter
         virtual void makeAbstract() = 0;
         void unlock();
         Missile* addMissile(sf::Vector2f shooterSize,sf::Vector2f targetPosition);
+        sf::Vector2f cursorPosition();
 };
 
 class NormalShooter:public Shooter
@@ -50,10 +51,11 @@ class NormalShooter:public Shooter
         void setInvalidSign();
         void setLock();
     public:
-        NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,int  inCooldownPeriod = settings::defaultCooldown);
+        NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int  inCooldownPeriod = settings::defaultCooldown);
         std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
+        sf::Vector2f cursorPosition();
 };
 class SpreadShooter:public Shooter
 {
@@ -67,10 +69,12 @@ class SpreadShooter:public Shooter
         void setInvalidSign();
         void setLock();
     public:
-        SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,int  inCooldownPeriod = settings::spreadCooldown);
+        SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int  inCooldownPeriod = settings::spreadCooldown);
         std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
+        sf::Vector2f cursorPosition();
+
 };
 class RapidShooter:public Shooter
 {
@@ -84,8 +88,10 @@ class RapidShooter:public Shooter
         void setLock();
 
     public:
-        RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,int  inCooldownPeriod = settings::rapidCooldown);
+        RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int  inCooldownPeriod = settings::rapidCooldown);
         std::vector<Missile*> shoot(sf::Vector2f targetPosition) override;
         void draw(sf::RenderWindow & window) override;
         void makeAbstract() override;
+        sf::Vector2f cursorPosition();
+
 };

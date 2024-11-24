@@ -91,12 +91,16 @@ Missile* Shooter::addMissile(sf::Vector2f shooterSize,sf::Vector2f targetPositio
         return new LineMissile(startPosition,targetPosition);
     }
 }
+sf::Vector2f Shooter::cursorPosition()
+{
+    
+}
 
 
-NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
+NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {   
-    graphicTexture.loadFromFile(settings::normalShooterImage);
+    graphicTexture.loadFromFile(displayImageLocation);
     graphics.setTexture(graphicTexture);
     type = settings::shooterType::normalShooter;
     graphics.setPosition(inPosition);
@@ -167,15 +171,21 @@ void NormalShooter::draw(sf::RenderWindow & window)
 }
 void NormalShooter::makeAbstract(){}
 
+sf::Vector2f NormalShooter::cursorPosition()
+{
+    sf::Vector2f cursorPos;
+    cursorPos.x = this->position.x + this->graphics.getGlobalBounds().getSize().x;
+    return cursorPos;
+}
 
 
 
 
-SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
+SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
     type = settings::shooterType::spreadShooter;
-    graphicTexture.loadFromFile(settings::spreadShooterImage);
+    graphicTexture.loadFromFile(displayImageLocation);
     graphics.setTexture(graphicTexture);
     graphics.setPosition(inPosition);
 
@@ -258,15 +268,20 @@ void SpreadShooter::setLock()
 }
 void SpreadShooter::makeAbstract(){}
 
+sf::Vector2f SpreadShooter::cursorPosition()
+{
+    sf::Vector2f cursorPos;
+    cursorPos.x = this->position.x + this->graphics.getGlobalBounds().getSize().x;
+    return cursorPos;
+}
 
 
 
-
-RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,int inCooldownPeriod)
+RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int inCooldownPeriod)
 :Shooter(inPosition,inMissile,inCooldownPeriod)
 {
     type = settings::shooterType::rapidShooter;
-    graphicTexture.loadFromFile(settings::rapidShooterImage);
+    graphicTexture.loadFromFile(displayImageLocation);
     graphics.setTexture(graphicTexture);
     graphics.setPosition(inPosition);
     
@@ -342,3 +357,9 @@ void RapidShooter::draw(sf::RenderWindow &window)
 void RapidShooter::makeAbstract(){}
 
 
+sf::Vector2f RapidShooter::cursorPosition()
+{
+    sf::Vector2f cursorPos;
+    cursorPos.x = this->position.x + this->graphics.getGlobalBounds().getSize().x;
+    return cursorPos;
+}
