@@ -51,12 +51,11 @@ void Game::run()
             missileManager->addMissile(shooterManager->shoot(mousePosition));
         }
         this->window->clear();
-        this->asteroidManager->update();
-        this->asteroidManager->render();
-        this->missileManager->updateStatus();
-        this->missileManager->executeMissileBehaviour();
-        this->missileManager->draw();
+        this->missileManager->update();
+        this->asteroidManager->update(missileManager);
+        this->missileManager->render();
         this->shooterManager->render();
+        this->asteroidManager->render();
         isMousePressed = false;
         window->display();
     }
