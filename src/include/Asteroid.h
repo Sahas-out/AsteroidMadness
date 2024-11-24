@@ -19,8 +19,10 @@ private:
 
     void initTexture();
     void initSprite();
-    
+    std::vector<std::vector<bool>> mask;
     void initAttributes(int);
+    // Function to generate a pixel mask for the sprite
+    std::vector<std::vector<bool>> generatePixelMask(sf::Texture);
 public:
     Asteroid(float pos_x,float pos_y,int type);
     virtual ~Asteroid();
@@ -30,4 +32,6 @@ public:
     void move(const float dirx, const float dirY);
     void update();
     void render(sf::RenderTarget& target);
+    sf::Sprite getSprite();
+    std::vector<std::vector<bool>> getMask();
 };

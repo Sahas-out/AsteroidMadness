@@ -53,15 +53,22 @@ void MissileManager::updateStatus()
         missile->updateState();
     }
 }
-void MissileManager::draw()
+
+MissileManager::~MissileManager()
+{
+    this->missileList.clear();
+}
+
+void MissileManager::update()
+{
+    this->updateStatus();
+    this->executeMissileBehaviour();
+}
+
+void MissileManager::render()
 {
     for(auto missile: this->missileList)
     {
         missile->draw(*this->window);
     }
-}
-
-MissileManager::~MissileManager()
-{
-    this->missileList.clear();
 }
