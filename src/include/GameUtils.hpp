@@ -21,6 +21,7 @@ namespace settings
     const std::string spreadShooterImage = resource_path + "silvershooter.png";
     const std::string lockImage = resource_path + "lock.png";
     const std::string invalidSignImage = resource_path + "invalid.png";
+    const std::string backgroundImage = resource_path + "backgroundimage.png";
 
     const double missileSpeed = 10;
 

@@ -10,9 +10,12 @@ private:
     AsteroidManager* asteroidManager;
     ShooterManager* shooterManager;
     MissileManager* missileManager;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
 
 public:
     void initWindow();
+    void initBackground();
     void initAsteroidManager();
     Game();
     ~Game();
