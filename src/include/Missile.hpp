@@ -81,6 +81,7 @@ class LineMissile : public Missile
         sf::VertexArray line;
         sf::CircleShape aliveCircle;
         sf::CircleShape explodeCircle;
+        double explodeCircleSpeed;
     public:
         LineMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
         void draw(sf::RenderWindow &window) override;
