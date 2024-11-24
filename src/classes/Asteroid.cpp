@@ -24,12 +24,30 @@ void Asteroid::initTexture()
     }
 }
 
+std::vector<std::vector<bool>> Asteroid::generatePixelMask(sf::Texture texture) {
+    sf::Image image = texture.copyToImage();
+    std::vector<std::vector<bool>> mask(image.getSize().y, std::vector<bool>(image.getSize().x, false));
+
+    for (unsigned int y = 0; y < image.getSize().y; ++y) {
+        for (unsigned int x = 0; x < image.getSize().x; ++x) {
+            sf::Color pixel = image.getPixel(x, y);
+            // Set mask to true for non-transparent pixels
+            if (pixel.a > 0) {
+                mask[y][x] = true;
+            }
+        }
+    }
+    return mask;
+}
+
 void Asteroid::initSprite()
 {
     //set the texture to the sprite
     this->sprite.setTexture(this->texture);
     this->sprite.scale(scale,scale);
+    this->mask = generatePixelMask(texture);
 }
+
 
 void Asteroid::initAttributes(int type)
 {
@@ -44,7 +62,7 @@ void Asteroid::initAttributes(int type)
     else if (type == 1)
     {
         this->type = "Quick"; 
-        this->speed = 5.0f;
+        this->speed = 4.0f;
         this->hp = 10;
         this->maxHp = 10;
         this->pointsAwarded = 2;
@@ -86,4 +104,14 @@ void Asteroid::update()
 void Asteroid::render(sf::RenderTarget &target)
 {
     target.draw(this->sprite);
+}
+
+sf::Sprite Asteroid::getSprite()
+{
+    return this->sprite;
+}
+
+std::vector<std::vector<bool>> Asteroid::getMask()
+{
+    return this->mask;
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include"Shooter.hpp"
 #include<vector>
 class ShooterManager{
@@ -5,12 +7,12 @@ class ShooterManager{
     std::vector<Shooter*>shooterList;
     int currentShooter;
     int unlockCounter;
-    sf::RenderWindow &window;
+    sf::RenderWindow *window;
     
     public:
-    ShooterManager(sf::RenderWindow &inWindow);
-    void render(sf::RenderWindow & window);
-    std::vector<Missile*>* shoot(sf::Vector2f target);
+    ShooterManager(sf::RenderWindow *inWindow);
+    void render();
+    std::vector<Missile*> shoot(sf::Vector2f target);
     void selectShooter(int index);
     void unlockNext();
     void Update();

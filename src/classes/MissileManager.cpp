@@ -1,10 +1,10 @@
 #include"MissileManager.hpp"
-MissileManager::MissileManager(sf::RenderWindow& inWindow)
+MissileManager::MissileManager(sf::RenderWindow* inWindow)
 :window(inWindow)
 {
 
 }
-void MissileManager::addMissile(std::vector<Missile*>& newMissileList)
+void MissileManager::addMissile(std::vector<Missile*> newMissileList)
 {
     for(auto missile: newMissileList)
     {
@@ -53,15 +53,22 @@ void MissileManager::updateStatus()
         missile->updateState();
     }
 }
-void MissileManager::draw()
-{
-    for(auto missile: this->missileList)
-    {
-        missile->draw(this->window);
-    }
-}
 
 MissileManager::~MissileManager()
 {
     this->missileList.clear();
+}
+
+void MissileManager::update()
+{
+    this->updateStatus();
+    this->executeMissileBehaviour();
+}
+
+void MissileManager::render()
+{
+    for(auto missile: this->missileList)
+    {
+        missile->draw(*this->window);
+    }
 }
