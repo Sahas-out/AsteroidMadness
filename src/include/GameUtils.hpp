@@ -15,6 +15,7 @@ namespace settings
     const int  rapidCooldown = 144;
     enum shooterType {normalShooter=1,spreadShooter=2,rapidShooter=3};
     enum missileType {normalMissile = 1,bigMissile =2,nukeMissile = 3,lineMissile = 4};
+    const int totalShootersCount = 7;
     const std::string resource_path = "./resources/";
     const std::string rapidShooterImage = resource_path + "purpleshooter.png";
     const std::string normalShooterImage = resource_path + "blueshooter.png";
@@ -22,6 +23,17 @@ namespace settings
     const std::string lockImage = resource_path + "lock.png";
     const std::string invalidSignImage = resource_path + "invalid.png";
     const std::string backgroundImage = resource_path + "backgroundimage.png";
+    const std::string cursorImage = resource_path + "crosshair.png";
+    const std::string shooter1 = resource_path + "shooter1.png";
+    const std::string shooter2 = resource_path + "shooter2.png";
+    const std::string shooter3 = resource_path + "shooter3.png";
+    const std::string shooter4 = resource_path + "shooter4.png";
+    const std::string shooter5 = resource_path + "shooter5.png";
+    const std::string shooter6 = resource_path + "shooter6.png";
+    const std::string shooter7 = resource_path + "shooter7.png";
+    const std::string shooterCursorImage = resource_path + "shooterCursor.png";
+    const std::string backgroundMusic = resource_path + "backgroundMusic.mp3";
+    const std::string missileSound = resource_path + "missileSound.wav";
 
     const double missileSpeed = 10;
 
@@ -48,11 +60,11 @@ namespace settings
     };
     
     //const sf::Vector2f wrtWindow=window.getView().getSize();
-    const std::vector<sf::Vector2f>coordinates={
-        sf::Vector2f(windowWidth * 0.050f, windowHeight * 0.9f),
-        sf::Vector2f(windowWidth * 0.245f, windowHeight * 0.9f),
-        sf::Vector2f(windowWidth * 0.465f, windowHeight * 0.9f),
-        sf::Vector2f(windowWidth * 0.675f, windowHeight * 0.9f),
-        sf::Vector2f(windowWidth * 0.875f, windowHeight * 0.9f)
-        };
+    // const std::vector<sf::Vector2f>coordinates={
+    //     sf::Vector2f(windowWidth * 0.050f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.245f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.465f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.675f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.875f, windowHeight * 0.9f)
+    //     };
 };

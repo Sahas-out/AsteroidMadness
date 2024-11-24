@@ -20,6 +20,13 @@ Game::Game()
     this->initAsteroidManager();
     this->missileManager = new MissileManager(this->window);
     this->shooterManager = new ShooterManager(this->window);
+    cursorImage.loadFromFile(settings::cursorImage);
+    cursor.loadFromPixels(cursorImage.getPixelsPtr(),cursorImage.getSize(),sf::Vector2u(cursorImage.getSize().x/2,cursorImage.getSize().y/2));
+    window->setMouseCursor(cursor);
+    backgroundMusic.openFromFile(settings::backgroundMusic);
+    backgroundMusic.setVolume(20);
+    backgroundMusic.setLoop(true);
+    backgroundMusic.play();
 }
 
 Game::~Game()
@@ -102,6 +109,14 @@ void Game::run()
                 isMousePressed = true;
                 mousePosition = sf::Vector2f(sf::Mouse::getPosition(*window));
             }
+            // if(event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::A)
+            // {
+            //     shooterManager->selectShooter((shooterManager->getCurrentShooter() - 1)%7);
+            // }
+            // if(event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::D)
+            // {
+            //     shooterManager->selectShooter((shooterManager->getCurrentShooter() + 1)%7);
+            // }
         }
         if(isMousePressed)
         {
