@@ -16,6 +16,7 @@ Game::Game()
     this->asteroidManager = new AsteroidManager();
 
     this->initWindow();
+    this->initBackground();
     this->initAsteroidManager();
     this->missileManager = new MissileManager(this->window);
     this->shooterManager = new ShooterManager(this->window);
@@ -32,10 +33,38 @@ Game::~Game()
 {
     delete this->window;
 }
-
-void Game::run()
+void Game::initBackground()
 {
-    shooterManager->selectShooter(4);
+    if (!backgroundTexture.loadFromFile(settings::backgroundImage))
+    {
+        std::cout << "Error loading background!" << std::endl;
+        return;
+    }
+
+    // Enable smooth scaling
+    backgroundTexture.setSmooth(true);
+    
+    backgroundSprite.setTexture(backgroundTexture);
+
+    // Calculate scale needed to fill window
+    float scaleX = static_cast<float>(settings::windowWidth) / backgroundTexture.getSize().x;
+    float scaleY = static_cast<float>(settings::windowHeight) / backgroundTexture.getSize().y;
+
+    // Use the larger scale to ensure full coverage
+    float scale = std::max(scaleX, scaleY);
+    backgroundSprite.setScale(scale, scale);
+
+    // Center the background if it's larger than the window
+    float xPos = (settings::windowWidth - (backgroundTexture.getSize().x * scale)) / 2.0f;
+    float yPos = (settings::windowHeight - (backgroundTexture.getSize().y * scale)) / 2.0f;
+    
+    backgroundSprite.setPosition(xPos, yPos);
+}
+void Game::run()
+
+{   int index=0;
+    shooterManager->selectShooter(index);
+
 
     bool isMousePressed = false ;        // check is the mouse is pressed in this frame
     sf::Vector2f mousePosition; // store the values of the mouse position if the mouse is pressed
@@ -46,8 +75,38 @@ void Game::run()
         {
             if (event.Event::type == sf::Event::Closed)
                 this->window->close();
-            if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::Escape)
-                this->window->close();
+            // if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::Escape)
+            //     this->window->close();
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    case sf::Keyboard::Escape:
+                        this->window->close();
+                        break;
+                    case sf::Keyboard::A:
+                        index = (index <= 0) ? 4 : index - 1;
+                        shooterManager->selectShooter(index);
+                        break;
+                    case sf::Keyboard::D:
+                        index = (index >= 4) ? 0 : index + 1;
+                        shooterManager->selectShooter(index);
+                        break;
+                    case sf::Keyboard::Num1:
+                        index = 0; shooterManager->selectShooter(index); 
+                        break;
+                    case sf::Keyboard::Num2: 
+                        index = 1; shooterManager->selectShooter(index);
+                        break;
+                    case sf::Keyboard::Num3: 
+                        index = 2; shooterManager->selectShooter(index);
+                        break;
+                    case sf::Keyboard::Num4: 
+                        index = 3; shooterManager->selectShooter(index);
+                        break;
+                    case sf::Keyboard::Num5: 
+                        index = 4; shooterManager->selectShooter(index);
+                        break;
+                }
+            }
             if (event.Event::type == sf::Event::MouseButtonPressed){
                 isMousePressed = true;
                 mousePosition = sf::Vector2f(sf::Mouse::getPosition(*window));
@@ -65,7 +124,9 @@ void Game::run()
         {
             missileManager->addMissile(shooterManager->shoot(mousePosition));
         }
+        
         this->window->clear();
+        this->window->draw(backgroundSprite); 
         this->missileManager->update();
         this->asteroidManager->update(missileManager);
         this->missileManager->render();
