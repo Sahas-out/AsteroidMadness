@@ -62,10 +62,11 @@ void Game::initBackground()
 }
 void Game::run()
 
-{   int index=0;
-    shooterManager->selectShooter(index);
+{   
+    // int index=0;
+    // shooterManager->selectShooter(index);
 
-
+    int shooter;
     bool isMousePressed = false ;        // check is the mouse is pressed in this frame
     sf::Vector2f mousePosition; // store the values of the mouse position if the mouse is pressed
     while(this->window->isOpen())
@@ -75,35 +76,35 @@ void Game::run()
         {
             if (event.Event::type == sf::Event::Closed)
                 this->window->close();
-            // if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::Escape)
-            //     this->window->close();
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::Escape:
                         this->window->close();
                         break;
                     case sf::Keyboard::A:
-                        index = (index <= 0) ? 4 : index - 1;
-                        shooterManager->selectShooter(index);
+                        shooter = shooterManager->getCurrentShooter();
+                        shooter = (shooter - 1 < 0) ? settings::totalShootersCount - 1 : shooter -1 ;
+                        shooterManager->selectShooter(shooter);
                         break;
                     case sf::Keyboard::D:
-                        index = (index >= 4) ? 0 : index + 1;
-                        shooterManager->selectShooter(index);
+                        shooter = shooterManager->getCurrentShooter();
+                        shooter = (shooter + 1 >= settings::totalShootersCount) ? 0 : shooter +1 ;
+                        shooterManager->selectShooter(shooter);
                         break;
                     case sf::Keyboard::Num1:
-                        index = 0; shooterManager->selectShooter(index); 
+                        shooterManager->selectShooter(0); 
                         break;
                     case sf::Keyboard::Num2: 
-                        index = 1; shooterManager->selectShooter(index);
+                        shooterManager->selectShooter(1);
                         break;
                     case sf::Keyboard::Num3: 
-                        index = 2; shooterManager->selectShooter(index);
+                        shooterManager->selectShooter(2);
                         break;
                     case sf::Keyboard::Num4: 
-                        index = 3; shooterManager->selectShooter(index);
+                        shooterManager->selectShooter(3);
                         break;
                     case sf::Keyboard::Num5: 
-                        index = 4; shooterManager->selectShooter(index);
+                        shooterManager->selectShooter(4);
                         break;
                 }
             }
@@ -111,14 +112,6 @@ void Game::run()
                 isMousePressed = true;
                 mousePosition = sf::Vector2f(sf::Mouse::getPosition(*window));
             }
-            // if(event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::A)
-            // {
-            //     shooterManager->selectShooter((shooterManager->getCurrentShooter() - 1)%7);
-            // }
-            // if(event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::D)
-            // {
-            //     shooterManager->selectShooter((shooterManager->getCurrentShooter() + 1)%7);
-            // }
         }
         if(isMousePressed)
         {
@@ -126,7 +119,7 @@ void Game::run()
         }
         
         this->window->clear();
-        this->window->draw(backgroundSprite); 
+        // this->window->draw(backgroundSprite); 
         this->missileManager->update();
         this->asteroidManager->update(missileManager);
         this->missileManager->render();

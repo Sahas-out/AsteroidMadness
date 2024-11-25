@@ -9,9 +9,9 @@ private:
     sf::RenderWindow* window;
     AsteroidManager* asteroidManager;
     ShooterManager* shooterManager;
-    MissileManager* missileManager
+    MissileManager* missileManager;
     sf::Texture backgroundTexture;
-    sf::Sprite 
+    sf::Sprite backgroundSprite;
     sf::Cursor cursor;
     sf::Image cursorImage;
     sf::Music backgroundMusic;
