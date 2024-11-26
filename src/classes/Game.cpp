@@ -47,18 +47,18 @@ void Game::initBackground()
     backgroundSprite.setTexture(backgroundTexture);
 
     // Calculate scale needed to fill window
-    float scaleX = static_cast<float>(settings::windowWidth) / backgroundTexture.getSize().x;
-    float scaleY = static_cast<float>(settings::windowHeight) / backgroundTexture.getSize().y;
+    // float scaleX = static_cast<float>(settings::windowWidth) / backgroundTexture.getSize().x;
+    // float scaleY = static_cast<float>(settings::windowHeight) / backgroundTexture.getSize().y;
 
-    // Use the larger scale to ensure full coverage
-    float scale = std::max(scaleX, scaleY);
-    backgroundSprite.setScale(scale, scale);
+    // // Use the larger scale to ensure full coverage
+    // float scale = std::max(scaleX, scaleY);
+    // backgroundSprite.setScale(scale, scale);
 
     // Center the background if it's larger than the window
-    float xPos = (settings::windowWidth - (backgroundTexture.getSize().x * scale)) / 2.0f;
-    float yPos = (settings::windowHeight - (backgroundTexture.getSize().y * scale)) / 2.0f;
+    // float xPos = (settings::windowWidth - (backgroundTexture.getSize().x * scale)) / 2.0f;
+    // float yPos = (settings::windowHeight - (backgroundTexture.getSize().y * scale)) / 2.0f;
     
-    backgroundSprite.setPosition(xPos, yPos);
+    backgroundSprite.setPosition(0, 0);
 }
 void Game::run()
 
@@ -119,7 +119,7 @@ void Game::run()
         }
         
         this->window->clear();
-        // this->window->draw(backgroundSprite); 
+         this->window->draw(backgroundSprite); 
         this->missileManager->update();
         this->asteroidManager->update(missileManager);
         this->missileManager->render();
