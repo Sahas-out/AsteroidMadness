@@ -13,7 +13,7 @@ void AsteroidManager::loadAudioFiles()
     }
     sf::Sound destructionSound;
     this->destructionSound.setBuffer(destructionBuffer);
-    this->destructionSound.setVolume(50.0f); // Set volume (0.0f to 100.0f)
+    this->destructionSound.setVolume(20); // Set volume (0.0f to 100.0f)
 }
 
 AsteroidManager::AsteroidManager()

@@ -24,7 +24,7 @@ Game::Game()
     cursor.loadFromPixels(cursorImage.getPixelsPtr(),cursorImage.getSize(),sf::Vector2u(cursorImage.getSize().x/2,cursorImage.getSize().y/2));
     window->setMouseCursor(cursor);
     backgroundMusic.openFromFile(settings::backgroundMusic);
-    backgroundMusic.setVolume(20);
+    backgroundMusic.setVolume(10);
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
 }
