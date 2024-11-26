@@ -22,7 +22,7 @@ namespace settings
     const std::string spreadShooterImage = resource_path + "silvershooter.png";
     const std::string lockImage = resource_path + "lock.png";
     const std::string invalidSignImage = resource_path + "invalid.png";
-    const std::string backgroundImage = resource_path + "stars2.png";
+    const std::string backgroundImage = resource_path + "stars.png";
     const std::string cursorImage = resource_path + "crosshair.png";
     const std::string shooter1 = resource_path + "shooter1.png";
     const std::string shooter2 = resource_path + "shooter2.png";
