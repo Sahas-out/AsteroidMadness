@@ -7,8 +7,8 @@ Missile::Missile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
     direction = targetPositon - inPosition;
     settings::normalise(&direction);
     speed = settings::missileSpeed;
-    blastRadius = settings::blastRadius;
-    explodeDuration = settings::explodeDuration;
+    blastRadius = 30;
+    explodeDuration = 25;
     state = State::ALIVE;
 }
 void Missile::move()
@@ -70,13 +70,14 @@ NormalMissile::NormalMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPositi
 :Missile(inPosition,inTargetPosition),
 line(sf::Lines,2),
 aliveCircle(settings::missileAliveCircleRadius),
-explodeCircle(blastRadius)
+explodeCircle()
 {
-    
+    this->blastRadius=50;
     line[0].position = inPosition;
     line[0].color = sf::Color::White;
     line[1].position = getPositon();
     line[1].color = sf::Color::Red;
+    this->explodeCircle.setRadius(blastRadius);
     aliveCircle.setFillColor(sf::Color::Blue);
     explodeCircle.setFillColor(sf::Color::White);
     explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
@@ -120,7 +121,7 @@ aliveCircle(settings::missileAliveCircleRadius),
 explodeCircle()
 {
     
-    blastRadius = 100;
+    blastRadius = 120;
     explodeCircle.setRadius(blastRadius);
     line[0].position = inPosition;
     line[0].color = sf::Color::White;
@@ -165,9 +166,12 @@ NukeMissile::NukeMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
 :Missile(inPosition,inTargetPosition),
 line(sf::Lines,2),
 aliveCircle(settings::missileAliveCircleRadius),
-explodeCircle(blastRadius)
-{
-    
+explodeCircle()
+{   
+    this->blastRadius=120;
+    this->explodeDuration=settings::fps*1.5;
+    this->increaseFactor=(500-this->blastRadius)/this->explodeDuration;
+    this->explodeCircle.setRadius(blastRadius);
     line[0].position = inPosition;
     line[0].color = sf::Color::White;
     line[1].position = getPositon();
@@ -180,7 +184,7 @@ explodeCircle(blastRadius)
 void NukeMissile::explode()
 {
     if(state != State::EXLPODE){return;}
-    blastRadius += settings::blastRadius*6/settings::explodeDuration;
+    blastRadius += increaseFactor;
     explodeCircle.setRadius(blastRadius);
     explodeCircle.setPosition(getTargetPositon() - sf::Vector2f(blastRadius,blastRadius));
     explodeDuration--;
@@ -215,9 +219,12 @@ LineMissile::LineMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition)
 :Missile(inPosition,inTargetPosition),
 line(sf::Lines,2),
 aliveCircle(settings::missileAliveCircleRadius),
-explodeCircle(blastRadius)
-{
-    blastRadius = settings::lineMissileBlastRadius;
+explodeCircle()
+{   
+    this->explodeDuration=settings::fps*0.8;
+    this->blastRadius=125;
+    this->reduceFactor=(blastRadius-30)/explodeDuration;
+    this->explodeCircle.setRadius(blastRadius);
     line[0].position = inPosition;
     line[0].color = sf::Color::White;
     line[1].position = getPositon();
@@ -232,7 +239,7 @@ void LineMissile::explode()
 {
     if(state != State::EXLPODE){return;}
     sf::Vector2f newCenterPos = explodeCircle.getPosition() + (sf::Vector2f(blastRadius,blastRadius)) + settings::scalarProduct(this->getDirection(),explodeCircleSpeed);
-    blastRadius -= settings::blastRadius/settings::explodeDuration;
+    blastRadius -= reduceFactor;
     explodeCircle.setRadius(blastRadius);
     explodeCircle.setPosition(newCenterPos  - sf::Vector2f(blastRadius,blastRadius));
     explodeDuration--;
