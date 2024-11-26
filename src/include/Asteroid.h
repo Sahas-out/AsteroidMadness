@@ -28,7 +28,9 @@ public:
 
     const sf::FloatRect getBounds() const;
     //functions
-    void move(const float dirx, const float dirY);
+    int getHP();
+    void decreaseHP();
+    int getPoints();
     void update();
     void render(sf::RenderTarget& target);
 };

@@ -7,6 +7,11 @@ void AsteroidManager::initAstroid()
 
 AsteroidManager::AsteroidManager()
 {
+<<<<<<< Updated upstream
+=======
+    this->score = 0;
+    this->loadAudioFiles();
+>>>>>>> Stashed changes
     this->initAstroid();
 }
 
@@ -23,20 +28,98 @@ void AsteroidManager::setWindow(sf::RenderWindow* window)
     this->window = window;
 }
 
+int AsteroidManager::getScore()
+{
+    return this->score;
+}
+
 // Functions
+<<<<<<< Updated upstream
 
 void AsteroidManager::updateAsteroids()
 {
     //generating a random asteroid at spawm time
     this->spawnTimer += 0.5f;
+=======
+bool AsteroidManager::pixelPerfectCollision(const sf::Sprite& sprite, const settings::Circle& circle, const std::vector<std::vector<bool>>& mask) {
+    sf::FloatRect circleBounds(circle.pos.x - circle.r, circle.pos.y - circle.r, 2 * circle.r, 2 * circle.r);
+    if (!circleBounds.intersects(sprite.getGlobalBounds())) {
+        return false; // No collision possible
+    }
+
+    sf::Transform transform = sprite.getTransform();
+    const int step = 50; // Adjust for performance vs. accuracy
+
+    for (unsigned int y = 0; y < mask.size(); y += step) {
+        for (unsigned int x = 0; x < mask[0].size(); x += step) {
+            if (mask[y][x]) {
+                sf::Vector2f globalPoint = transform.transformPoint(static_cast<float>(x), static_cast<float>(y));
+                float dx = globalPoint.x - circle.pos.x;
+                float dy = globalPoint.y - circle.pos.y;
+
+                if (dx * dx + dy * dy <= circle.r * circle.r) {
+                    return true; // Collision detected
+                }
+            }
+        }
+    }
+    return false; // No collision
+}
+
+
+void AsteroidManager::updateAsteroids(MissileManager* missileManager)
+{
+    //generating a random asteroid at spawm time
+    this->spawnTimer += 0.2f;
+    int collisonHappened = false;
+>>>>>>> Stashed changes
     if(this->spawnTimer >=spawnTimerMax){
         this->asteroids.push_back(new Asteroid(rand() % (this->window->getSize().x - 100),-100.f, rand() % 3));
         this->spawnTimer =0.0f;
     }
     for(int index = 0;index < this->asteroids.size(); index++){
         asteroids[index]->update();
+        std::vector<settings::Circle> circles = missileManager->getAllBounds().first;
+        std::vector<Missile *> missiles = missileManager->getAllBounds().second;
 
+<<<<<<< Updated upstream
         //remove asteriods at the bottom of the screen
+=======
+        for (int missile_index = 0;missile_index < missiles.size();missile_index++) {
+            if (pixelPerfectCollision(asteroids[index]->getSprite(), circles[missile_index], asteroids[index]->getMask())) {
+                collisonHappened = true; 
+                collision = std::make_pair(asteroids[index], missiles[missile_index]);
+                
+
+                if (activeCollisions.find(collision) == activeCollisions.end()) {
+                    asteroids[index]->decreaseHP(); // Process damage only for new collisions
+                    activeCollisions.insert(collision); // Mark this collision as active
+                    
+                    if (asteroids[index]->getHP() <= 0) {
+                        this->score += asteroids[index]->getPoints();
+                        destructionSound.play();
+                        for (auto it = activeCollisions.begin(); it != activeCollisions.end(); ) {
+                            if (it->first == asteroids[index]) {
+                                it = activeCollisions.erase(it); // Erase and get the next iterator
+                            } else {
+                                ++it; // Move to the next element
+                            }
+                        }
+                        delete asteroids[index];
+                        this->asteroids.erase(this->asteroids.begin() + index);
+                        index--;
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        if (collisonHappened){
+            collisonHappened =false;
+            continue;
+        }
+>>>>>>> Stashed changes
         if(this->asteroids[index]->getBounds().top > this->window->getSize().y- 100.0f)
         {
             this->asteroids.erase(this->asteroids.begin() +index);
