@@ -206,7 +206,7 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
     setLock();
     setInvalidSign();
     missileCount = 5;
-    spread = 50;
+    spread = 150;
 
 }
 std::vector<Missile*> SpreadShooter::shoot(sf::Vector2f targetPosition) //override

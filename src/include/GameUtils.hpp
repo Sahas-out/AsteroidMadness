@@ -35,11 +35,8 @@ namespace settings
     const std::string backgroundMusic = resource_path + "backgroundMusic.mp3";
     const std::string missileSound = resource_path + "missileSound.wav";
     const double shooterWidth = 100;
-    const double missileSpeed = 10;
+    const double missileSpeed = 12;
 
-    const double blastRadius = 30;
-    const double bigBlastRadius = 100;
-    const int explodeDuration = 25;
     const double missileAliveCircleRadius = 3.5;
 
     const double lineMissileBlastRadius = 65;
@@ -59,12 +56,5 @@ namespace settings
             Circle();
     };
     
-    //const sf::Vector2f wrtWindow=window.getView().getSize();
-    // const std::vector<sf::Vector2f>coordinates={
-    //     sf::Vector2f(windowWidth * 0.050f, windowHeight * 0.9f),
-    //     sf::Vector2f(windowWidth * 0.245f, windowHeight * 0.9f),
-    //     sf::Vector2f(windowWidth * 0.465f, windowHeight * 0.9f),
-    //     sf::Vector2f(windowWidth * 0.675f, windowHeight * 0.9f),
-    //     sf::Vector2f(windowWidth * 0.875f, windowHeight * 0.9f)
-    //     };
+    
 };

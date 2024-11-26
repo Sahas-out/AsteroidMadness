@@ -8,13 +8,13 @@ ShooterManager::ShooterManager(sf::RenderWindow * inWindow):window(inWindow){
     {
         coordinates.push_back(sf::Vector2f((i*spaceBetween)+margin,ShootersYPositon));
     }
-    NormalShooter* crap = new NormalShooter(coordinates[3],settings::missileType::normalMissile,settings::shooter1);
-    NormalShooter * alright = new NormalShooter(coordinates[2],settings::missileType::bigMissile,settings::shooter2);
-    RapidShooter * ohh = new RapidShooter(coordinates[4],settings::missileType::lineMissile,settings::shooter3);
-    NormalShooter * woahhh= new NormalShooter(coordinates[1],settings::missileType::nukeMissile,settings::shooter4);
-    SpreadShooter * awesome= new SpreadShooter(coordinates[5],settings::missileType::bigMissile,settings::shooter5);
-    SpreadShooter * goat = new SpreadShooter(coordinates[0],settings::missileType::lineMissile,settings::shooter6);
-    RapidShooter * perfect = new RapidShooter(coordinates[6],settings::nukeMissile,settings::shooter7);
+    NormalShooter* crap = new NormalShooter(coordinates[3],settings::missileType::normalMissile,settings::shooter1,settings::fps*0.5);
+    NormalShooter * alright = new NormalShooter(coordinates[2],settings::missileType::bigMissile,settings::shooter2,settings::fps*2);
+    RapidShooter * ohh = new RapidShooter(coordinates[4],settings::missileType::lineMissile,settings::shooter3,settings::fps*3);
+    NormalShooter * woahhh= new NormalShooter(coordinates[1],settings::missileType::nukeMissile,settings::shooter4,settings::fps*10);
+    SpreadShooter * awesome= new SpreadShooter(coordinates[5],settings::missileType::bigMissile,settings::shooter5,settings::fps*5);
+    SpreadShooter * goat = new SpreadShooter(coordinates[0],settings::missileType::lineMissile,settings::shooter6,settings::fps*8);
+    RapidShooter * perfect = new RapidShooter(coordinates[6],settings::nukeMissile,settings::shooter7,settings::fps*10);
     this->shooterList.insert(shooterList.end(),{crap,alright,ohh,woahhh,awesome,goat,perfect});
     
     this->unlockNext();

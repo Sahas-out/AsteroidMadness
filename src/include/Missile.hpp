@@ -67,6 +67,7 @@ class NukeMissile : public Missile
         sf::VertexArray line;
         sf::CircleShape aliveCircle;
         sf::CircleShape explodeCircle;
+        double increaseFactor;
     public:
         NukeMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
         void draw(sf::RenderWindow &window) override;
@@ -82,6 +83,7 @@ class LineMissile : public Missile
         sf::CircleShape aliveCircle;
         sf::CircleShape explodeCircle;
         double explodeCircleSpeed;
+        double reduceFactor;
     public:
         LineMissile(sf::Vector2f inPosition,sf::Vector2f inTargetPosition);
         void draw(sf::RenderWindow &window) override;

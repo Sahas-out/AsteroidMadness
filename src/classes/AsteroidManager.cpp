@@ -17,7 +17,7 @@ void AsteroidManager::loadAudioFiles()
 }
 
 AsteroidManager::AsteroidManager()
-{
+{  // std::cout<<"hehehhee"<<std::endl;
     this->loadAudioFiles();
     this->initAstroid();
 }
