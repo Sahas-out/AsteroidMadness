@@ -94,10 +94,10 @@ Missile* Shooter::addMissile(sf::Vector2f shooterSize,sf::Vector2f targetPositio
         return new LineMissile(startPosition,targetPosition);
     }
 }
-sf::Vector2f Shooter::cursorPosition()
-{
-    return sf::Vector2f();
-}
+// sf::Vector2f Shooter::cursorPosition()
+// {
+//     return sf::Vector2f();
+// }
 
 
 NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMissile,std::string displayImageLocation,int inCooldownPeriod)
@@ -108,7 +108,7 @@ NormalShooter::NormalShooter(sf::Vector2f inPosition,settings::missileType inMis
     type = settings::shooterType::normalShooter;
     graphics.setPosition(inPosition);
     
-    float width = 100; 
+    float width = settings::shooterWidth; 
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
 
@@ -175,13 +175,13 @@ void NormalShooter::draw(sf::RenderWindow & window)
 }
 void NormalShooter::makeAbstract(){}
 
-sf::Vector2f NormalShooter::cursorPosition()
-{
-    sf::Vector2f cursorPos;
-    cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
-    cursorPos.y = this->position.y - 10;
-    return cursorPos;
-}
+// sf::Vector2f NormalShooter::cursorPosition()
+// {
+//     sf::Vector2f cursorPos;
+//     cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
+//     cursorPos.y = this->position.y - 10;
+//     return cursorPos;
+// }
 
 
 
@@ -194,7 +194,7 @@ SpreadShooter::SpreadShooter(sf::Vector2f inPosition,settings::missileType inMis
     graphics.setTexture(graphicTexture);
     graphics.setPosition(inPosition);
 
-    float width = 100; // desired width
+    float width = settings::shooterWidth; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
 
@@ -276,13 +276,13 @@ void SpreadShooter::setLock()
 }
 void SpreadShooter::makeAbstract(){}
 
-sf::Vector2f SpreadShooter::cursorPosition()
-{
-    sf::Vector2f cursorPos;
-    cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
-    cursorPos.y = this->position.y - 10;
-    return cursorPos;
-}
+// sf::Vector2f SpreadShooter::cursorPosition()
+// {
+//     sf::Vector2f cursorPos;
+//     cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
+//     cursorPos.y = this->position.y - 10;
+//     return cursorPos;
+// }
 
 
 
@@ -294,7 +294,7 @@ RapidShooter::RapidShooter(sf::Vector2f inPosition,settings::missileType inMissi
     graphics.setTexture(graphicTexture);
     graphics.setPosition(inPosition);
     
-    float width = 100; // desired width
+    float width = settings::shooterWidth; // desired width
     float height = width / (graphicTexture.getSize().x / (float)graphicTexture.getSize().y);
     graphics.setScale(width / graphicTexture.getSize().x, height / graphicTexture.getSize().y);
 
@@ -368,10 +368,10 @@ void RapidShooter::draw(sf::RenderWindow &window)
 void RapidShooter::makeAbstract(){}
 
 
-sf::Vector2f RapidShooter::cursorPosition()
-{
-    sf::Vector2f cursorPos;
-    cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
-    cursorPos.y = this->position.y - 10;
-    return cursorPos;
-}
+// sf::Vector2f RapidShooter::cursorPosition()
+// {
+//     sf::Vector2f cursorPos;
+//     cursorPos.x = this->position.x + (this->graphics.getGlobalBounds().getSize().x/2);
+//     cursorPos.y = this->position.y - 10;
+//     return cursorPos;
+// }
