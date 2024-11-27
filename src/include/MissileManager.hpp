@@ -10,7 +10,7 @@ class MissileManager
     public:
         MissileManager(sf::RenderWindow* inWindow);
         void addMissile(std::vector<Missile*> newMissileList);
-        std::vector<settings::Circle> getAllBounds();
+        std::pair<std::vector<settings::Circle>,std::vector<Missile*>> getAllBounds();
         void executeMissileBehaviour();
         void updateStatus();
         ~MissileManager();

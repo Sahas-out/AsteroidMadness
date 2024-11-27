@@ -71,8 +71,8 @@ void Asteroid::initAttributes(int type)
     else if (type == 2){
         this->type = "Strong"; 
         this->speed = 1.0f;
-        this->hp = 50;
-        this->maxHp = 50;
+        this->hp = 30;
+        this->maxHp = 30;
         this->pointsAwarded = 3;
         this->scale = 0.1f;
     }
@@ -94,6 +94,21 @@ Asteroid::~Asteroid()
 const sf::FloatRect Asteroid::getBounds() const
 {
     return this->sprite.getGlobalBounds();
+}
+
+int Asteroid::getHP()
+{
+    return hp;
+}
+
+void Asteroid::decreaseHP()
+{
+    this->hp -= 10;
+}
+
+int Asteroid::getPoints()
+{
+    return this->pointsAwarded;
 }
 
 void Asteroid::update()

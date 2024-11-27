@@ -23,6 +23,8 @@ namespace settings
     const std::string lockImage = resource_path + "lock.png";
     const std::string invalidSignImage = resource_path + "invalid.png";
     const std::string backgroundImage = resource_path + "stars.png";
+    
+    const std::string asteroid_textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "strong_asteroid.png"}; 
     const std::string cursorImage = resource_path + "crosshair.png";
     const std::string shooter1 = resource_path + "shooter1.png";
     const std::string shooter2 = resource_path + "shooter2.png";
@@ -40,9 +42,8 @@ namespace settings
     const double missileAliveCircleRadius = 3.5;
 
     const double lineMissileBlastRadius = 65;
-    const std::string asteroid_textureFiles [3] = {resource_path + "normal_asteroid.png",resource_path + "quick_asteroid.png",resource_path + "strong_asteroid.png"}; 
     const std::string destructionAudio = resource_path + "destruction.wav";
-
+    const std::string fontFile = resource_path + "arcade.ttf";
 
     const double dotProduct(sf::Vector2f a,sf::Vector2f b);
     const void  normalise(sf::Vector2f * vector);
@@ -57,4 +58,13 @@ namespace settings
     };
     
     
+    //const sf::Vector2f wrtWindow=window.getView().getSize();
+    // const std::vector<sf::Vector2f>coordinates={
+    //     sf::Vector2f(windowWidth * 0.050f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.245f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.465f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.675f, windowHeight * 0.9f),
+    //     sf::Vector2f(windowWidth * 0.875f, windowHeight * 0.9f)
+    //     };
+
 };

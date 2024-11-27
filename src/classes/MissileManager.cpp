@@ -12,17 +12,19 @@ void MissileManager::addMissile(std::vector<Missile*> newMissileList)
     }
 }
 
-std::vector<settings::Circle> MissileManager::getAllBounds()
+std::pair<std::vector<settings::Circle>,std::vector<Missile*>> MissileManager::getAllBounds()
 {
     std::vector<settings::Circle> bounds;
+    std::vector<Missile *> missiles;
     for(auto missile: this->missileList)
     {
         if(missile->getState() == Missile::State::EXLPODE)
         {
             bounds.push_back(missile->getBounds());
+            missiles.push_back(missile);
         }
     }
-    return bounds;
+    return std::make_pair(bounds,missiles);
 }
 void MissileManager::executeMissileBehaviour()
 {

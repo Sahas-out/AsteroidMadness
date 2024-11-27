@@ -10,6 +10,7 @@ class AsteroidManager
 private:
     sf::RenderWindow* window;
 
+    int score;
     //Astorid 
     float spawnTimer;
     float spawnTimerMax;
@@ -23,11 +24,16 @@ private:
     void initAstroid();
     void loadAudioFiles();
 
+    //collision logic
+    std::set<std::pair<Asteroid*, Missile*>> activeCollisions;
+    std::pair<Asteroid *, Missile *> collision;
+
 public:
     AsteroidManager();
     virtual ~AsteroidManager();
 
     //Functions
+    int getScore();
     bool pixelPerfectCollision(const sf::Sprite&, const settings::Circle&, const std::vector<std::vector<bool>>&);
     void setWindow(sf::RenderWindow*);
     void updateAsteroids(MissileManager*);
