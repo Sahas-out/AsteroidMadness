@@ -25,16 +25,19 @@ private:
     sf::Text scoreText;
     int score;
 
+    bool GameOver;
+    sf::Text gameOverText;
 public:
     void initWindow();
     void initScore();
     void displayScore();
     void initBackground();
     void initAsteroidManager();
+    void handleKeys(sf::Event & event);
+    void run();
     Game();
     ~Game();
  
-    void run();
 
 };
 
