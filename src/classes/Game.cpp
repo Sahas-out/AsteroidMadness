@@ -21,6 +21,18 @@ void Game::initScore()
     this->score = asteroidManager->getScore();
 }
 
+void Game::clearScreen()
+{
+    delete asteroidManager;
+    delete missileManager;
+    delete shooterManager;
+    this->asteroidManager = new AsteroidManager();
+    this->missileManager = new MissileManager(this->window);
+    this->shooterManager = new ShooterManager(this->window);
+    this->initAsteroidManager();
+    this->score = 0;
+}
+
 void Game::displayScore()
 {
     score = asteroidManager->getScore();
@@ -51,17 +63,17 @@ Game::Game()
     cursor.loadFromPixels(cursorImage.getPixelsPtr(),cursorImage.getSize(),sf::Vector2u(cursorImage.getSize().x/2,cursorImage.getSize().y/2));
     window->setMouseCursor(cursor);
     backgroundMusic.openFromFile(settings::backgroundMusic);
-    backgroundMusic.setVolume(10);
+    backgroundMusic.setVolume(40);
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
     gameOverText.setString("GAME OVER");
     gameOverText.setCharacterSize(100);
-    // gameOverText.setFont(sf::Font::);
+    gameOverText.setFont(font);
     gameOverText.setFillColor(sf::Color::White);
     gameOverText.setPosition
     (settings::windowWidth/2 - gameOverText.getGlobalBounds().getSize().x /2,
     settings::windowHeight/2 - gameOverText.getGlobalBounds().getSize().y/2);
-    GameOver = true;
+    gameOver = false;
 }
 
 Game::~Game()
@@ -103,81 +115,9 @@ void Game::run()
                 this->window->close();
             this->handleKeys(event);
         }
-        //     if(GameOver)
-        //     {
-        //         if (event.type == sf::Event::KeyPressed)
-        //         {
-        //             if(event.key.code == sf::Keyboard::Escape)
-        //             {
-        //                 this->window->close();
-        //             }
-        //             if(event.key.code == sf::Keyboard::Space)
-        //             {
-        //                 //restarts the game
-        //                 GameOver = false;
-        //                 //clear asteroids and missiles
-        //                 continue;
-        //             }
-        //             if(event.key.code == sf::Keyboard::S)
-        //             {
-        //                 //save the score
-        //             }
-        //         }
-        //         window->clear();
-        //         window->draw(backgroundSprite);
-        //         window->draw(gameOverText);
-        //         continue;
-        //     }
-        //     if (event.type == sf::Event::KeyPressed) {
-        //         switch (event.key.code) {
-        //             case sf::Keyboard::Escape:
-        //                 this->window->close();
-        //                 break;
-        //             case sf::Keyboard::A:
-        //                 shooter = shooterManager->getCurrentShooter();
-        //                 shooter = (shooter - 1 < 0) ? settings::totalShootersCount - 1 : shooter -1 ;
-        //                 shooterManager->selectShooter(shooter);
-        //                 break;
-        //             case sf::Keyboard::D:
-        //                 shooter = shooterManager->getCurrentShooter();
-        //                 shooter = (shooter + 1 >= settings::totalShootersCount) ? 0 : shooter +1 ;
-        //                 shooterManager->selectShooter(shooter);
-        //                 break;
-        //             case sf::Keyboard::Num1:
-        //                 shooterManager->selectShooter(0); 
-        //                 break;
-        //             case sf::Keyboard::Num2: 
-        //                 shooterManager->selectShooter(1);
-        //                 break;
-        //             case sf::Keyboard::Num3: 
-        //                 shooterManager->selectShooter(2);
-        //                 break;
-        //             case sf::Keyboard::Num4: 
-        //                 shooterManager->selectShooter(3);
-        //                 break;
-        //             case sf::Keyboard::Num5: 
-        //                 shooterManager->selectShooter(4);
-        //                 break;
-        //             case sf::Keyboard::Num6:
-        //                 shooterManager->selectShooter(5);
-        //                 break;
-        //             case sf::Keyboard::Num7:
-        //                 shooterManager->selectShooter(6);
-        //                 break;
-        //         }
-        //     }
-        //     if (event.Event::type == sf::Event::MouseButtonPressed){
-        //         isMousePressed = true;
-        //         mousePosition = sf::Vector2f(sf::Mouse::getPosition(*window));
-        //     }
-        // }
-        // if(isMousePressed)
-        // {
-        //     missileManager->addMissile(shooterManager->shoot(mousePosition));
-        // }
         
         this->window->clear();
-        if(GameOver)
+        if(gameOver)
         {
             window->draw(backgroundSprite);
             window->draw(gameOverText);
@@ -187,6 +127,10 @@ void Game::run()
         this->window->draw(backgroundSprite); 
         this->missileManager->update();
         this->asteroidManager->update(missileManager);
+        gameOver = asteroidManager->gameOver;
+        if(gameOver){
+            continue;
+        }
         this->shooterManager->render();
         this->asteroidManager->render();
         this->missileManager->render();
@@ -199,7 +143,7 @@ void Game::run()
 void Game::handleKeys(sf::Event & event)
 {
     int shooter;
-    if(GameOver)
+    if(gameOver)
     {
         if (event.type == sf::Event::KeyPressed)
         {
@@ -210,7 +154,8 @@ void Game::handleKeys(sf::Event & event)
             if(event.key.code == sf::Keyboard::Space)
             {
                 //restarts the game
-                GameOver = false;
+                this->clearScreen();
+                gameOver = false;
                 //clear asteroids and missiles
             }
             if(event.key.code == sf::Keyboard::S)

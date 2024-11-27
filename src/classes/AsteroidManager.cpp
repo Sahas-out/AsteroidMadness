@@ -70,7 +70,7 @@ bool AsteroidManager::pixelPerfectCollision(const sf::Sprite& sprite, const sett
 void AsteroidManager::updateAsteroids(MissileManager* missileManager)
 {
     //generating a random asteroid at spawm time
-    this->spawnTimer += 0.2f;
+    this->spawnTimer += 0.1f;
     int collisonHappened = false;
     if(this->spawnTimer >=spawnTimerMax){
         this->asteroids.push_back(new Asteroid(rand() % (this->window->getSize().x - 100),-100.f, rand() % 3));
@@ -116,10 +116,9 @@ void AsteroidManager::updateAsteroids(MissileManager* missileManager)
             collisonHappened =false;
             continue;
         }
-        if(this->asteroids[index]->getBounds().top > this->window->getSize().y- 100.0f)
+        if(this->asteroids[index]->getBounds().top > this->window->getSize().y- 50.0f)
         {
-            this->asteroids.erase(this->asteroids.begin() +index);
-            index--;
+            gameOver = true;
         }
     }
 

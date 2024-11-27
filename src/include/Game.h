@@ -25,11 +25,12 @@ private:
     sf::Text scoreText;
     int score;
 
-    bool GameOver;
+    bool gameOver;
     sf::Text gameOverText;
 public:
     void initWindow();
     void initScore();
+    void clearScreen();
     void displayScore();
     void initBackground();
     void initAsteroidManager();

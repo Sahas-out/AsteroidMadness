@@ -29,6 +29,7 @@ private:
     std::pair<Asteroid *, Missile *> collision;
 
 public:
+    bool gameOver = false;
     AsteroidManager();
     virtual ~AsteroidManager();
 
