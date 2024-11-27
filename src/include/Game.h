@@ -15,14 +15,17 @@ private:
     sf::Cursor cursor;
     sf::Image cursorImage;
     sf::Music backgroundMusic;
+    bool GameOver;
+    sf::Text gameOverText;
 public:
     void initWindow();
     void initBackground();
     void initAsteroidManager();
+    void handleKeys(sf::Event & event);
+    void run();
     Game();
     ~Game();
  
-    void run();
 
 };
 
