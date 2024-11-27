@@ -1,6 +1,5 @@
 #include "AsteroidManager.h"
 
-
 void AsteroidManager::initAstroid()
 {
     this->spawnTimerMax = 50.0f;
@@ -13,11 +12,12 @@ void AsteroidManager::loadAudioFiles()
     }
     sf::Sound destructionSound;
     this->destructionSound.setBuffer(destructionBuffer);
-    this->destructionSound.setVolume(50.0f); // Set volume (0.0f to 100.0f)
+    this->destructionSound.setVolume(20); // Set volume (0.0f to 100.0f)
 }
 
 AsteroidManager::AsteroidManager()
-{  // std::cout<<"hehehhee"<<std::endl;
+{  
+    this->score = 0;
     this->loadAudioFiles();
     this->initAstroid();
 }
@@ -35,24 +35,31 @@ void AsteroidManager::setWindow(sf::RenderWindow* window)
     this->window = window;
 }
 
+int AsteroidManager::getScore()
+{
+    return this->score;
+}
+
 // Functions
 bool AsteroidManager::pixelPerfectCollision(const sf::Sprite& sprite, const settings::Circle& circle, const std::vector<std::vector<bool>>& mask) {
-    // Get sprite's global transformation
-    sf::FloatRect bounds = sprite.getGlobalBounds();
+    sf::FloatRect circleBounds(circle.pos.x - circle.r, circle.pos.y - circle.r, 2 * circle.r, 2 * circle.r);
+    if (!circleBounds.intersects(sprite.getGlobalBounds())) {
+        return false; // No collision possible
+    }
+
     sf::Transform transform = sprite.getTransform();
+    const int step = 50; // Adjust for performance vs. accuracy
 
-    // Iterate over the circle's pixels
-    for (float angle = 0; angle < 360.f; angle += 1.f) {
-        sf::Vector2f point = circle.pos + sf::Vector2f(circle.r * cos(angle), circle.r * sin(angle));
-        if (bounds.contains(point)) {
-            // Convert global point to local sprite coordinates
-            sf::Vector2f localPoint = transform.getInverse().transformPoint(point);
-            int x = static_cast<int>(localPoint.x);
-            int y = static_cast<int>(localPoint.y);
+    for (unsigned int y = 0; y < mask.size(); y += step) {
+        for (unsigned int x = 0; x < mask[0].size(); x += step) {
+            if (mask[y][x]) {
+                sf::Vector2f globalPoint = transform.transformPoint(static_cast<float>(x), static_cast<float>(y));
+                float dx = globalPoint.x - circle.pos.x;
+                float dy = globalPoint.y - circle.pos.y;
 
-            // Check if the point is within the mask
-            if (x >= 0 && y >= 0 && x < mask[0].size() && y < mask.size() && mask[y][x]) {
-                return true; // Collision detected
+                if (dx * dx + dy * dy <= circle.r * circle.r) {
+                    return true; // Collision detected
+                }
             }
         }
     }
@@ -63,40 +70,55 @@ bool AsteroidManager::pixelPerfectCollision(const sf::Sprite& sprite, const sett
 void AsteroidManager::updateAsteroids(MissileManager* missileManager)
 {
     //generating a random asteroid at spawm time
-    this->spawnTimer += 0.2f;
+    this->spawnTimer += 0.1f;
     int collisonHappened = false;
-    // if(asteroids.size()<4){
-    //     this->asteroids.push_back(new Asteroid(this->window->getSize().x/2,this->window->getSize().y/2,2));
-    //     this->asteroids.push_back(new Asteroid(this->window->getSize().x/2+20.0f,this->window->getSize().y/2,1));
-    // }
     if(this->spawnTimer >=spawnTimerMax){
         this->asteroids.push_back(new Asteroid(rand() % (this->window->getSize().x - 100),-100.f, rand() % 3));
         this->spawnTimer =0.0f;
     }
     for(int index = 0;index < this->asteroids.size(); index++){
         asteroids[index]->update();
+        std::vector<settings::Circle> circles = missileManager->getAllBounds().first;
+        std::vector<Missile *> missiles = missileManager->getAllBounds().second;
 
-        //remove asteriods at the bottom of the screen
-        for(settings::Circle circle : missileManager->getAllBounds())
-        {
+        
+        for (int missile_index = 0;missile_index < missiles.size();missile_index++) {
+            if (pixelPerfectCollision(asteroids[index]->getSprite(), circles[missile_index], asteroids[index]->getMask())) {
+                collisonHappened = true; 
+                collision = std::make_pair(asteroids[index], missiles[missile_index]);
+                
 
-            if(pixelPerfectCollision(asteroids[index]->getSprite(),circle,asteroids[index]->getMask()))
-            {
-                collisonHappened = true;
-                destructionSound.play();
-                this->asteroids.erase(this->asteroids.begin() +index);
-                index--;
-                break;
+                if (activeCollisions.find(collision) == activeCollisions.end()) {
+                    asteroids[index]->decreaseHP(); // Process damage only for new collisions
+                    activeCollisions.insert(collision); // Mark this collision as active
+                    
+                    if (asteroids[index]->getHP() <= 0) {
+                        this->score += asteroids[index]->getPoints();
+                        destructionSound.play();
+                        for (auto it = activeCollisions.begin(); it != activeCollisions.end(); ) {
+                            if (it->first == asteroids[index]) {
+                                it = activeCollisions.erase(it); // Erase and get the next iterator
+                            } else {
+                                ++it; // Move to the next element
+                            }
+                        }
+                        delete asteroids[index];
+                        this->asteroids.erase(this->asteroids.begin() + index);
+                        index--;
+                        break;
+                    }
+                }
             }
+
         }
+
         if (collisonHappened){
             collisonHappened =false;
             continue;
         }
-        if(this->asteroids[index]->getBounds().top > this->window->getSize().y- 100.0f)
+        if(this->asteroids[index]->getBounds().top > this->window->getSize().y- 50.0f)
         {
-            this->asteroids.erase(this->asteroids.begin() +index);
-            index--;
+            gameOver = true;
         }
     }
 

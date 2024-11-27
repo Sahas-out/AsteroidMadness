@@ -13,7 +13,7 @@ Shooter::Shooter(sf::Vector2f inPosition,settings::missileType inMissile,int inC
     invalidSign.setTexture(invalidSignTexture);
     missileLaunchBuffer.loadFromFile(settings::missileSound);
     missileLaunchSound.setBuffer(missileLaunchBuffer);
-    missileLaunchSound.setVolume(10);
+    missileLaunchSound.setVolume(20);
 }
 std::vector<Missile*> Shooter::shoot(sf::Vector2f targetPosition)
 {

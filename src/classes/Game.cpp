@@ -1,9 +1,46 @@
 #include "Game.h"
 #include<iostream>
+
 void Game::initWindow()
 {
     this->window = new sf::RenderWindow(sf::VideoMode(settings::windowWidth,settings::windowHeight),"astroid shooter",sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(settings::fps);
+}
+
+void Game::initScore()
+{
+    if (!font.loadFromFile(settings::fontFile)) { // Ensure you have this font in your project directory
+        std::cout << "Error: Font file not found" << std::endl;
+        return;
+    }
+    // Create a text object
+    scoreText.setFont(font);                // Set the font
+    scoreText.setCharacterSize(70);         // Set the text size
+    scoreText.setFillColor(sf::Color::White); // Set the text color
+    scoreText.setPosition(10.f, 10.f);      // Set the text position
+    this->score = asteroidManager->getScore();
+}
+
+void Game::clearScreen()
+{
+    delete asteroidManager;
+    delete missileManager;
+    delete shooterManager;
+    this->asteroidManager = new AsteroidManager();
+    this->missileManager = new MissileManager(this->window);
+    this->shooterManager = new ShooterManager(this->window);
+    this->initAsteroidManager();
+    this->score = 0;
+}
+
+void Game::displayScore()
+{
+    score = asteroidManager->getScore();
+    scoreStream.str("");          // Clear previous content
+    scoreStream.clear();          // Reset flags
+    scoreStream << "Score: " << score;
+    scoreText.setString(scoreStream.str());
+    window->draw(scoreText);
 }
 
 void Game::initAsteroidManager()
@@ -20,13 +57,23 @@ Game::Game()
     this->initAsteroidManager();
     this->missileManager = new MissileManager(this->window);
     this->shooterManager = new ShooterManager(this->window);
+
+    this->initScore();
     cursorImage.loadFromFile(settings::cursorImage);
     cursor.loadFromPixels(cursorImage.getPixelsPtr(),cursorImage.getSize(),sf::Vector2u(cursorImage.getSize().x/2,cursorImage.getSize().y/2));
     window->setMouseCursor(cursor);
     backgroundMusic.openFromFile(settings::backgroundMusic);
-    backgroundMusic.setVolume(20);
+    backgroundMusic.setVolume(40);
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
+    gameOverText.setString("GAME OVER");
+    gameOverText.setCharacterSize(100);
+    gameOverText.setFont(font);
+    gameOverText.setFillColor(sf::Color::White);
+    gameOverText.setPosition
+    (settings::windowWidth/2 - gameOverText.getGlobalBounds().getSize().x /2,
+    settings::windowHeight/2 - gameOverText.getGlobalBounds().getSize().y/2);
+    gameOver = false;
 }
 
 Game::~Game()
@@ -66,59 +113,103 @@ void Game::run()
         {
             if (event.Event::type == sf::Event::Closed)
                 this->window->close();
-            if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
-                    case sf::Keyboard::Escape:
-                        this->window->close();
-                        break;
-                    case sf::Keyboard::A:
-                        shooter = shooterManager->getCurrentShooter();
-                        shooter = (shooter - 1 < 0) ? settings::totalShootersCount - 1 : shooter -1 ;
-                        shooterManager->selectShooter(shooter);
-                        break;
-                    case sf::Keyboard::D:
-                        shooter = shooterManager->getCurrentShooter();
-                        shooter = (shooter + 1 >= settings::totalShootersCount) ? 0 : shooter +1 ;
-                        shooterManager->selectShooter(shooter);
-                        break;
-                    case sf::Keyboard::Num1:
-                        shooterManager->selectShooter(0); 
-                        break;
-                    case sf::Keyboard::Num2: 
-                        shooterManager->selectShooter(1);
-                        break;
-                    case sf::Keyboard::Num3: 
-                        shooterManager->selectShooter(2);
-                        break;
-                    case sf::Keyboard::Num4: 
-                        shooterManager->selectShooter(3);
-                        break;
-                    case sf::Keyboard::Num5: 
-                        shooterManager->selectShooter(4);
-                        break;
-                }
-            }
-            if (event.Event::type == sf::Event::MouseButtonPressed){
-                isMousePressed = true;
-                mousePosition = sf::Vector2f(sf::Mouse::getPosition(*window));
-            }
-        }
-        if(isMousePressed)
-        {
-            missileManager->addMissile(shooterManager->shoot(mousePosition));
+            this->handleKeys(event);
         }
         
         this->window->clear();
-         this->window->draw(backgroundSprite); 
+        if(gameOver)
+        {
+            window->draw(backgroundSprite);
+            window->draw(gameOverText);
+            window->display();
+            continue;
+        }
+        this->window->draw(backgroundSprite); 
         this->missileManager->update();
         this->asteroidManager->update(missileManager);
-        this->missileManager->render();
+        gameOver = asteroidManager->gameOver;
+        if(gameOver){
+            continue;
+        }
         this->shooterManager->render();
         this->asteroidManager->render();
+        this->missileManager->render();
+        this->displayScore();                             //update and render score
         isMousePressed = false;
         window->display();
     }
-    }
+}
 
+void Game::handleKeys(sf::Event & event)
+{
+    int shooter;
+    if(gameOver)
+    {
+        if (event.type == sf::Event::KeyPressed)
+        {
+            if(event.key.code == sf::Keyboard::Escape)
+            {
+                this->window->close();
+            }
+            if(event.key.code == sf::Keyboard::Space)
+            {
+                //restarts the game
+                this->clearScreen();
+                gameOver = false;
+                //clear asteroids and missiles
+            }
+            if(event.key.code == sf::Keyboard::S)
+            {
+                //save the score
+            }
+        }
+        return;
+    }
+    if (event.type == sf::Event::KeyPressed) 
+    {
+        switch (event.key.code) 
+        {
+            case sf::Keyboard::Escape:
+                this->window->close();
+                break;
+            case sf::Keyboard::A:
+                shooter = shooterManager->getCurrentShooter();
+                shooter = (shooter - 1 < 0) ? settings::totalShootersCount - 1 : shooter -1 ;
+                shooterManager->selectShooter(shooter);
+                break;
+            case sf::Keyboard::D:
+                shooter = shooterManager->getCurrentShooter();
+                shooter = (shooter + 1 >= settings::totalShootersCount) ? 0 : shooter +1 ;
+                shooterManager->selectShooter(shooter);
+                break;
+            case sf::Keyboard::Num1:
+                shooterManager->selectShooter(0); 
+                break;
+            case sf::Keyboard::Num2: 
+                shooterManager->selectShooter(1);
+                break;
+            case sf::Keyboard::Num3: 
+                shooterManager->selectShooter(2);
+                break;
+            case sf::Keyboard::Num4: 
+                shooterManager->selectShooter(3);
+                break;
+            case sf::Keyboard::Num5: 
+                shooterManager->selectShooter(4);
+                break;
+            case sf::Keyboard::Num6:
+                shooterManager->selectShooter(5);
+                break;
+            case sf::Keyboard::Num7:
+                shooterManager->selectShooter(6);
+                break;
+        }
+    }
+    if (event.Event::type == sf::Event::MouseButtonPressed)
+    {
+        sf::Vector2f mousePosition = sf::Vector2f(sf::Mouse::getPosition(*window));
+        missileManager->addMissile(shooterManager->shoot(mousePosition));
+    }
+}
 
 
