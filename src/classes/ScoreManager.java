@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Comparator;
 // import java.nio.file.Paths;
 // import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -26,7 +27,7 @@ public class ScoreManager {
         //sorting the map according to the values to get the top 3
         LinkedHashMap<String, Integer> sortedMap = this.score.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue())
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -37,17 +38,17 @@ public class ScoreManager {
 
 
 
-    public void writeScore(int scr) {
+    public void writeScore() {
 
 
 
         // LinkedHashMap<String,Integer> d= sort();
         String fileName="SCORE_FILE.txt";
-
+        this.score = sort();
         try (FileWriter writer = new FileWriter(fileName)) {
             // Write the content to the file
             for(String key: score.keySet()){
-                writer.write(key+" : "+ scr+"\n");
+                writer.write(key+" : "+ String.valueOf(score.get(key))+"\n");
             }
 
         } catch (IOException e) {
@@ -66,7 +67,7 @@ public class ScoreManager {
             while ((line = reader.readLine()) != null) {
                 String newline=line.replace("\n","");
                 String[] parts=newline.split(" : ");
-                this.score.put(parts[0],Integer.getInteger(parts[1]));
+                this.score.put(parts[0],Integer.parseInt(parts[1]));
 
             }
         } catch (IOException e) {

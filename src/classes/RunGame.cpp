@@ -5,6 +5,7 @@ JNIEXPORT jint JNICALL Java_GameRunner_runGame
 {
     Game* game = new Game();
     game->run();
+    int score = game->getSessionHighScore();
     delete game;
-    return game->getSessionHighScore();
+    return score;
 }

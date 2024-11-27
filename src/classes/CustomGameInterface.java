@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -16,7 +18,11 @@ public class CustomGameInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null); // Use absolute positioning for custom design
-
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                scr.writeScore();
+            }
+        });
 
         // Custom panel for gradient background
         JPanel backgroundPanel = new JPanel() {
@@ -171,5 +177,4 @@ public class CustomGameInterface extends JFrame {
             }
         });
     }
-
 }

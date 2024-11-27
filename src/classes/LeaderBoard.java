@@ -132,6 +132,7 @@ public class LeaderBoard extends JFrame {
         setupButton(third, (this.l * 3 / 4) - 140, 300, "Third Position: \n" + top.get(2));
 
         // Add buttons to the background panel
+        if(top.size() < 3){return ;}
         backgroundPanel.add(first);
         backgroundPanel.add(second);
         backgroundPanel.add(third);
@@ -152,7 +153,7 @@ public class LeaderBoard extends JFrame {
     }
 
     private void gettop() {
-        String filename = "src/score_file.txt";
+        String filename = "SCORE_FILE.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
