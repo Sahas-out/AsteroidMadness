@@ -8,15 +8,7 @@ public class CustomGameInterface extends JFrame {
     private int l = 1430;
     private int h = 850;
     private ScoreManager scr=new ScoreManager();
-
-//    // Declare the native method
-//    public native void startGame();
-//
-//    static {
-//        // Load the native library (ensure the library is in the Java library path)
-//        System.loadLibrary("GameLibrary");  // The name of your C++ library without the file extension
-//    }
-
+    private GameRunner gameRunner = new GameRunner();
     public CustomGameInterface() {
         // Set up the frame
         setTitle("Asteroid Madness");
@@ -167,7 +159,9 @@ public class CustomGameInterface extends JFrame {
                 String userName = nameField.getText().trim();
                 JOptionPane.showMessageDialog(null, message);
                 if(message.equals("Starting the game...")){
-                    scr.addscore(userName);
+                    int usr_score = 0; 
+                    usr_score = gameRunner.runGame();
+                    scr.addscore(userName,usr_score);
                     //startGame();
                 }
                 else if(message.equals("Displaying the scores...")){

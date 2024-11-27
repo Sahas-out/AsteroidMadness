@@ -74,10 +74,12 @@ Game::Game()
     (settings::windowWidth/2 - gameOverText.getGlobalBounds().getSize().x /2,
     settings::windowHeight/2 - gameOverText.getGlobalBounds().getSize().y/2);
     gameOver = false;
+    sessionHighScore = 0;
 }
 
 Game::~Game()
 {
+    backgroundMusic.stop();
     delete this->window;
 }
 void Game::initBackground()
@@ -103,9 +105,9 @@ void Game::run()
     // int index=0;
     // shooterManager->selectShooter(index);
 
-    int shooter;
-    bool isMousePressed = false ;        // check is the mouse is pressed in this frame
-    sf::Vector2f mousePosition; // store the values of the mouse position if the mouse is pressed
+    // int shooter;
+    // bool isMousePressed = false ;        // check is the mouse is pressed in this frame
+    // sf::Vector2f mousePosition; // store the values of the mouse position if the mouse is pressed
     while(this->window->isOpen())
     {
         sf::Event event;
@@ -129,13 +131,14 @@ void Game::run()
         this->asteroidManager->update(missileManager);
         gameOver = asteroidManager->gameOver;
         if(gameOver){
+            sessionHighScore = std::max(sessionHighScore,score);
             continue;
         }
         this->shooterManager->render();
-        this->asteroidManager->render();
         this->missileManager->render();
+        this->asteroidManager->render();
         this->displayScore();                             //update and render score
-        isMousePressed = false;
+        // isMousePressed = false;
         window->display();
     }
 }
@@ -157,10 +160,6 @@ void Game::handleKeys(sf::Event & event)
                 this->clearScreen();
                 gameOver = false;
                 //clear asteroids and missiles
-            }
-            if(event.key.code == sf::Keyboard::S)
-            {
-                //save the score
             }
         }
         return;
@@ -213,3 +212,8 @@ void Game::handleKeys(sf::Event & event)
 }
 
 
+
+int Game::getSessionHighScore()
+{
+    return this->sessionHighScore;
+}

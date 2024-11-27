@@ -1,6 +1,6 @@
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.HashMap;
+// import java.nio.file.Paths;
+// import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,8 +14,8 @@ public class ScoreManager {
         this.readScoresFromFile();
     }
 
-    public void addscore(String usr){
-        score.put(usr,0);
+    public void addscore(String usr,int usr_score){
+        score.put(usr,usr_score);
 
     }
 
@@ -41,7 +41,7 @@ public class ScoreManager {
 
 
 
-        LinkedHashMap<String,Integer> d= sort();
+        // LinkedHashMap<String,Integer> d= sort();
         String fileName="SCORE_FILE.txt";
 
         try (FileWriter writer = new FileWriter(fileName)) {
