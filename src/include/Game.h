@@ -1,11 +1,12 @@
 #pragma once
-
 #include <AsteroidManager.h>
 #include"MissileManager.hpp"
 #include"ShooterManager.hpp"
 #include <iostream>
 #include <sstream>
 
+extern "C"
+{
 class Game
 {
 private:
@@ -24,7 +25,7 @@ private:
     std::ostringstream scoreStream;
     sf::Text scoreText;
     int score;
-
+    int sessionHighScore;
     bool gameOver;
     sf::Text gameOverText;
 public:
@@ -36,9 +37,10 @@ public:
     void initAsteroidManager();
     void handleKeys(sf::Event & event);
     void run();
+    int getSessionHighScore();
     Game();
     ~Game();
  
 
 };
-
+}

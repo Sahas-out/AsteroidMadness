@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -8,15 +10,7 @@ public class CustomGameInterface extends JFrame {
     private int l = 1430;
     private int h = 850;
     private ScoreManager scr=new ScoreManager();
-
-//    // Declare the native method
-//    public native void startGame();
-//
-//    static {
-//        // Load the native library (ensure the library is in the Java library path)
-//        System.loadLibrary("GameLibrary");  // The name of your C++ library without the file extension
-//    }
-
+    private GameRunner gameRunner = new GameRunner();
     public CustomGameInterface() {
         // Set up the frame
         setTitle("Asteroid Madness");
@@ -24,7 +18,11 @@ public class CustomGameInterface extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null); // Use absolute positioning for custom design
-
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                scr.writeScore();
+            }
+        });
 
         // Custom panel for gradient background
         JPanel backgroundPanel = new JPanel() {
@@ -167,7 +165,9 @@ public class CustomGameInterface extends JFrame {
                 String userName = nameField.getText().trim();
                 JOptionPane.showMessageDialog(null, message);
                 if(message.equals("Starting the game...")){
-                    scr.addscore(userName);
+                    int usr_score = 0; 
+                    usr_score = gameRunner.runGame();
+                    scr.addscore(userName,usr_score);
                     //startGame();
                 }
                 else if(message.equals("Displaying the scores...")){
@@ -177,5 +177,4 @@ public class CustomGameInterface extends JFrame {
             }
         });
     }
-
 }

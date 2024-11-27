@@ -43,7 +43,7 @@ namespace settings
 
     const double lineMissileBlastRadius = 65;
     const std::string destructionAudio = resource_path + "destruction.wav";
-    const std::string fontFile = resource_path + "arcade.ttf";
+    const std::string fontFile = resource_path + "arcade.TTF";
 
     const double dotProduct(sf::Vector2f a,sf::Vector2f b);
     const void  normalise(sf::Vector2f * vector);
