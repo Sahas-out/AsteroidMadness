@@ -1,0 +1,56 @@
+[
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/Asteroid.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Asteroid.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Asteroid.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/Asteroid.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/AsteroidManager.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/AsteroidManager.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/AsteroidManager.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/AsteroidManager.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/Game.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Game.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Game.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/Game.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/GameUtils.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/GameUtils.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/GameUtils.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/GameUtils.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/Main.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Main.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Main.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/Main.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/Missile.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Missile.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Missile.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/Missile.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/MissileManager.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/MissileManager.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/MissileManager.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/MissileManager.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/Shooter.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Shooter.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/Shooter.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/Shooter.cpp.o"
+},
+{
+  "directory": "/home/sahas-sangal/Projects/AsteroidMadnessGame/build",
+  "command": "/usr/bin/c++  -I/home/sahas-sangal/Projects/AsteroidMadnessGame/lib/SFML-2.6.1/include -I/home/sahas-sangal/Projects/AsteroidMadnessGame/src/include -std=gnu++11 -o CMakeFiles/AsteroidMadness.dir/src/classes/ShooterManager.cpp.o -c /home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/ShooterManager.cpp",
+  "file": "/home/sahas-sangal/Projects/AsteroidMadnessGame/src/classes/ShooterManager.cpp",
+  "output": "CMakeFiles/AsteroidMadness.dir/src/classes/ShooterManager.cpp.o"
+}
+]

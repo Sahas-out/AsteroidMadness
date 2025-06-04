@@ -1,6 +1,6 @@
-#include "Asteroid.h"
+#include "Asteroid.hpp"
 #include "GameUtils.hpp"
-
+#include <iostream>
 void Asteroid::initTexture()
 {
     //load texture form file    

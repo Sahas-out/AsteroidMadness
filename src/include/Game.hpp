@@ -1,10 +1,8 @@
 #pragma once
-#include <AsteroidManager.h>
+#include "AsteroidManager.hpp"
 #include"MissileManager.hpp"
 #include"ShooterManager.hpp"
-#include <iostream>
 #include <sstream>
-#include <fstream>
 extern "C"
 {
 class Game

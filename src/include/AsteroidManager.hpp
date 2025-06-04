@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Asteroid.h"
+#include "Asteroid.hpp"
 #include "GameUtils.hpp"
-#include "MissileManager.hpp"
 #include <SFML/Audio.hpp>
 class AsteroidManager
 {

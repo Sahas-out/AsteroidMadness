@@ -1,0 +1,3 @@
+/home/sahas-sangal/Projects/AsteroidMadnessGame/build/CMakeFiles/AsteroidMadness.dir
+/home/sahas-sangal/Projects/AsteroidMadnessGame/build/CMakeFiles/edit_cache.dir
+/home/sahas-sangal/Projects/AsteroidMadnessGame/build/CMakeFiles/rebuild_cache.dir

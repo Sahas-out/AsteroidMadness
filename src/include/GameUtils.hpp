@@ -1,8 +1,6 @@
 #pragma once
 #include<SFML/System.hpp>
-#include<iostream>
 #include<string>
-#include<vector>
 #include<cmath>
 
 namespace settings

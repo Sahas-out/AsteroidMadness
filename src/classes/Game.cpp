@@ -1,5 +1,7 @@
-#include "Game.h"
+#include "Game.hpp"
+#include "GameUtils.hpp"
 #include<iostream>
+#include<fstream>
 
 void Game::initWindow()
 {
