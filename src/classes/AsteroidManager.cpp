@@ -120,3 +120,4 @@ void AsteroidManager::spawnAsteroids()
         this->spawnTimer = 0.0f;
     }
 }
+
